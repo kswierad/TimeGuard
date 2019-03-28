@@ -1,0 +1,32 @@
+apply plugin: 'java'
+apply plugin: 'application'
+
+
+description = """
+Project for course on Software Engineering
+
+Project name: ${project.name}
+
+Authors:
+Kamil Świerad
+Michał Stanisz
+Miłosz Janowski
+Piotr Szczerbiński
+Szymon Kurdziel
+Paulina Tuduj
+Konrad Radoń """
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+version = '0.1'
+
+
+mainClassName = 'pl.agh.cs.io.TimeGuard'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+}
+
