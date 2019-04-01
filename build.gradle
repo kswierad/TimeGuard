@@ -39,5 +39,15 @@ repositories {
 }
 
 dependencies {
+    compile group: 'net.java.dev.jna', name: 'jna', version: '5.2.0'
+    compile group: 'net.java.dev.jna', name: 'jna-platform', version: '5.2.0'
+
 }
 
+sourceSets {
+    main {
+        resources {
+            srcDirs= ["src/main/resources"]
+        }
+    }
+}
