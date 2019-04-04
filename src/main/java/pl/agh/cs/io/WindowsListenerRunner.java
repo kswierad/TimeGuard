@@ -1,9 +1,6 @@
 package pl.agh.cs.io;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -24,12 +21,12 @@ public class WindowsListenerRunner {
         return () -> {
             Window foregroundWindow = WindowsApiFacade.getForegroundWindow();
             List<Window> windows = WindowsApiFacade.getOpenWindows();
-            List<WindowsPerExe> exeWindows = new LinkedList<>();
+            Map<String, WindowsPerExe> exeWindows = new HashMap<>();
             Map<String, Set<Integer>> ids = windows
                     .stream()
                     .collect(Collectors.groupingBy(Window::getExePath,
                             Collectors.mapping(Window::getProcessId, Collectors.toSet())));
-            ids.forEach((k, v) -> exeWindows.add(new WindowsPerExe(k, v)));
+            ids.forEach((k, v) -> exeWindows.put(k, new WindowsPerExe(k, v)));
             OpenWindowsSnapshot snapshot = new OpenWindowsSnapshot(foregroundWindow, exeWindows);
             callback.accept(snapshot);
         };
