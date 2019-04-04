@@ -1,12 +1,13 @@
 package pl.agh.cs.io;
 
 import java.util.List;
+import java.util.Map;
 
 public class OpenWindowsSnapshot {
     private Window foregroundWindow;
-    private List<WindowsPerExe> allWindows;
+    private Map<String, WindowsPerExe> allWindows;
 
-    public OpenWindowsSnapshot(Window foregroundWindow, List<WindowsPerExe> allWindows) {
+    public OpenWindowsSnapshot(Window foregroundWindow, Map<String, WindowsPerExe> allWindows) {
         this.foregroundWindow = foregroundWindow;
         this.allWindows = allWindows;
     }
@@ -15,7 +16,7 @@ public class OpenWindowsSnapshot {
         return foregroundWindow;
     }
 
-    public List<WindowsPerExe> getAllWindows() {
+    public Map<String, WindowsPerExe> getAllWindows() {
         return allWindows;
     }
 
