@@ -9,10 +9,6 @@ public class Window {
         this.exePath = exePath;
     }
 
-    public void close() {
-        WindowsApiFacade.terminateProces(processId);
-    }
-
     public int getProcessId() {
         return processId;
     }
