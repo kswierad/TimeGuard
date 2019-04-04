@@ -4,15 +4,15 @@ import java.util.List;
 import java.util.Map;
 
 public class OpenWindowsSnapshot {
-    private Window foregroundWindow;
+    private WindowsPerExe foregroundWindow;
     private Map<String, WindowsPerExe> allWindows;
 
-    public OpenWindowsSnapshot(Window foregroundWindow, Map<String, WindowsPerExe> allWindows) {
+    public OpenWindowsSnapshot(WindowsPerExe foregroundWindow, Map<String, WindowsPerExe> backgroundWindows) {
         this.foregroundWindow = foregroundWindow;
-        this.allWindows = allWindows;
+        this.allWindows = backgroundWindows;
     }
 
-    public Window getForegroundWindow() {
+    public WindowsPerExe getForegroundWindow() {
         return foregroundWindow;
     }
 

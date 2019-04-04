@@ -27,7 +27,8 @@ public class WindowsListenerRunner {
                     .collect(Collectors.groupingBy(Window::getExePath,
                             Collectors.mapping(Window::getProcessId, Collectors.toSet())));
             ids.forEach((k, v) -> exeWindows.put(k, new WindowsPerExe(k, v)));
-            OpenWindowsSnapshot snapshot = new OpenWindowsSnapshot(foregroundWindow, exeWindows);
+            WindowsPerExe foregroundWindowPerExe = exeWindows.remove(foregroundWindow.getExePath());
+            OpenWindowsSnapshot snapshot = new OpenWindowsSnapshot(foregroundWindowPerExe, exeWindows);
             callback.accept(snapshot);
         };
     }
