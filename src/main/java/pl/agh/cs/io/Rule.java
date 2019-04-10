@@ -1,4 +1,4 @@
-package main.java.pl.agh.cs.io;
+package pl.agh.cs.io;
 
 import pl.agh.cs.io.State;
 
