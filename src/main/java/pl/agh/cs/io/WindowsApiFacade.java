@@ -61,8 +61,8 @@ public class WindowsApiFacade {
 
     private static String getExePathForProcess(int processId) {
         HANDLE process = getProcessHandle(processId);
-        byte[] buffer = new byte[MAX_PATH_BYTES];
-        Psapi.INSTANCE.GetModuleFileNameExA(process, null, buffer, buffer.length);
+        char[] buffer = new char[MAX_PATH_BYTES];
+        Psapi.INSTANCE.GetModuleFileNameExW(process, null, buffer, buffer.length);
         return Native.toString(buffer);
     }
 }
