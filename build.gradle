@@ -1,5 +1,6 @@
 apply plugin: 'java'
 apply plugin: 'application'
+apply plugin: 'checkstyle'
 
 
 description = """
@@ -16,12 +17,22 @@ Szymon Kurdziel
 Paulina Tuduj
 Konrad Radoń """
 
+
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 version = '0.1'
 
 
 mainClassName = 'pl.agh.cs.io.TimeGuard'
+
+checkstyleMain {
+    source ='src/main/java'
+}
+
+checkstyleTest {
+    source ='src/test/java'
+}
+
 
 repositories {
     mavenCentral()
