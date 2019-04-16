@@ -23,4 +23,8 @@ public class Rule {
     public String getExePath() {
         return exePath;
     }
+
+    public Time getTime() {
+        return time;
+    }
 }

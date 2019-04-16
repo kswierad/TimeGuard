@@ -1,39 +1,75 @@
 package pl.agh.cs.io;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 
 public class Rules implements Consumer<OpenWindowsSnapshot> {
-    private List<Rule> rules;
+    private ConcurrentHashMap<String, Rule> rules;
 
-    public Rules(){
-        this.rules = new ArrayList<>();
+    public Rules() {
+        this.rules = new ConcurrentHashMap<>();
     }
 
-    public void addRule(Rule rule){
-        this.rules.add(rule);
+    public boolean addRule(Rule rule) {
+        if (rules.containsKey(rule.getExePath())) {
+            return false;
+        }
+        this.rules.put(rule.getExePath(), rule);
+        return true;
     }
+
+    public boolean removeRule(String path) {
+        if (rules.containsKey(path)) {
+            rules.remove(path);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean removeRule(Rule rule) {
+        return removeRule(rule.getExePath());
+    }
+
 
     @Override
     public void accept(OpenWindowsSnapshot openWindowsSnapshot) {
-        for(Rule rule : rules){
-            State ruleState = getRuleState(openWindowsSnapshot, rule.getExePath());
-            rule.handle(ruleState);
+        HashMap<String, Rule> unchecked = getRulesCopy();
+
+        WindowsPerExe foreground = openWindowsSnapshot.getForegroundWindow();
+        Map<String, WindowsPerExe> allWindows = openWindowsSnapshot.getAllWindows();
+
+        // handle foreground window
+        if (unchecked.containsKey(foreground.getExePath())) {
+            rules.get(foreground.getExePath()).handle(State.FG);
+            unchecked.remove(foreground.getExePath());
+            allWindows.remove(foreground.getExePath());
+        }
+
+        // handle rest of windows
+        for (String exePath : allWindows.keySet()) {
+            if (unchecked.containsKey(exePath)) {
+                unchecked.get(exePath).handle(State.BG);
+                unchecked.remove(exePath);
+            }
+        }
+
+        // handle rules that are closed
+        for (Rule rule : unchecked.values()) {
+            rule.handle(State.CLOSED);
         }
     }
 
-    private State getRuleState(OpenWindowsSnapshot openWindowsSnapshot, String exePath){
-        WindowsPerExe foreground = openWindowsSnapshot.getForegroundWindow();
-        if(foreground.getExePath().equals(exePath))
-            return State.FG;
-
-        Map<String, WindowsPerExe> allWindows = openWindowsSnapshot.getAllWindows();
-        for(String key: allWindows.keySet()){
-            if(key.equals(exePath))
-                return State.BG;
+    public HashMap<String, Rule> getRulesCopy() {
+        HashMap<String, Rule> copy = new HashMap<>();
+        for (Rule rule : rules.values()) {
+            copy.put(rule.getExePath(), rule);
         }
-        return State.CLOSED;
+        return copy;
+    }
+
+    public ConcurrentHashMap<String, Rule> getRules() {
+        return rules;
     }
 }
