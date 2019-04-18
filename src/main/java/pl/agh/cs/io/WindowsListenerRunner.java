@@ -1,6 +1,9 @@
 package pl.agh.cs.io;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -14,7 +17,8 @@ public abstract class WindowsListenerRunner {
 
     public static void run(Consumer<OpenWindowsSnapshot> callback) {
         WindowsListenerRunner.callback = callback;
-        executorService.scheduleAtFixedRate(newGetOpenWindowsTask(), POLLING_DELAY_MILLIS, POLLING_DELAY_MILLIS, TimeUnit.MILLISECONDS);
+        executorService.scheduleAtFixedRate(newGetOpenWindowsTask(),
+                POLLING_DELAY_MILLIS, POLLING_DELAY_MILLIS, TimeUnit.MILLISECONDS);
     }
 
     private static Runnable newGetOpenWindowsTask() {
@@ -23,8 +27,9 @@ public abstract class WindowsListenerRunner {
             List<Window> windows = WindowsApiFacade.getOpenWindows();
             Map<String, WindowsPerExe> exeWindows = toWindowsPerExeMap(windows);
             WindowsPerExe foregroundWindowPerExe = exeWindows.remove(foregroundWindow.getExePath());
-            if (foregroundWindowPerExe == null)
+            if (foregroundWindowPerExe == null) {
                 foregroundWindowPerExe = WindowsPerExe.fromWindow(foregroundWindow);
+            }
             OpenWindowsSnapshot snapshot = new OpenWindowsSnapshot(foregroundWindowPerExe, exeWindows);
             callback.accept(snapshot);
         };
