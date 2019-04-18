@@ -1,27 +1,26 @@
 package pl.agh.cs.io;
 
+// holds type of activity (FG, BG), when started, and how long lasted
 public class Time {
-    private int fg, bg;
+    private final State type;
+    private final double amount;
+    private final long timestamp;
 
-    public Time() {
-        this.fg = 0;
-        this.bg = 0;
+    public Time(State type, double amount, long timestamp) {
+        this.type = type;
+        this.amount = amount;
+        this.timestamp = timestamp;
     }
 
-    public void addFgTime() {
-        this.fg += 1;
-        this.bg += 1;
+    public double getAmount() {
+        return amount;
     }
 
-    public void addBgTime() {
-        this.bg += 1;
+    public State getType() {
+        return type;
     }
 
-    public int getBg() {
-        return bg;
-    }
-
-    public int getFg() {
-        return fg;
+    public long getTimestamp() {
+        return timestamp;
     }
 }

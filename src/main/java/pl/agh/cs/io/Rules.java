@@ -32,7 +32,6 @@ public class Rules implements Consumer<OpenWindowsSnapshot> {
         return removeRule(rule.getExePath());
     }
 
-
     @Override
     public void accept(OpenWindowsSnapshot openWindowsSnapshot) {
         HashMap<String, Rule> unchecked = getRulesCopy();
@@ -50,14 +49,14 @@ public class Rules implements Consumer<OpenWindowsSnapshot> {
         // handle rest of windows
         for (String exePath : allWindows.keySet()) {
             if (unchecked.containsKey(exePath)) {
-                unchecked.get(exePath).handle(State.BG);
+                rules.get(exePath).handle(State.BG);
                 unchecked.remove(exePath);
             }
         }
 
         // handle rules that are closed
         for (Rule rule : unchecked.values()) {
-            rule.handle(State.CLOSED);
+            rules.get(rule.getExePath()).handle(State.CLOSED);
         }
     }
 
@@ -71,5 +70,14 @@ public class Rules implements Consumer<OpenWindowsSnapshot> {
 
     public ConcurrentHashMap<String, Rule> getRules() {
         return rules;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        for (Rule rule : rules.values()) {
+            sb.append(rule.toString());
+        }
+        return sb.toString();
     }
 }
