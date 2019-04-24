@@ -14,7 +14,7 @@ public class TimeCounterController {
     }
 
     public void accept(WindowsPerExe foregroundWindow, HashMap<String, Rule> rulesCopy) {
-        if(rulesCopy.containsKey(foregroundWindow.getExePath())) {
+        if (rulesCopy.containsKey(foregroundWindow.getExePath())) {
             Platform.runLater(() -> {
                 timeCounter.setText(rulesCopy.get(foregroundWindow.getExePath()).toString());
                 timeCounter.setWidthAndHeight();

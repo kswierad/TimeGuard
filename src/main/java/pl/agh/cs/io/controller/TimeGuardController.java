@@ -35,7 +35,7 @@ public class TimeGuardController {
                     if (change.wasAdded()) {
                         listOfRules.getItems().add(change.getKey());
                     }
-        }
+                }
 
         );
     }
@@ -47,7 +47,7 @@ public class TimeGuardController {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(TimeGuard.class.getResource("/statistics.fxml"));
 
-        VBox rootLayout =  loader.load();
+        VBox rootLayout = loader.load();
         ((StatsController) loader.getController()).setRules(rules);
         Scene scene = new Scene(rootLayout, 450, 600);
 
@@ -62,7 +62,7 @@ public class TimeGuardController {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(TimeGuard.class.getResource("/addRule.fxml"));
 
-        GridPane rootLayout =  loader.load();
+        GridPane rootLayout = loader.load();
         ((AddRuleController) loader.getController()).setRules(rules);
         Scene scene = new Scene(rootLayout, 450, 150);
 
@@ -77,7 +77,7 @@ public class TimeGuardController {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(TimeGuard.class.getResource("/removeRule.fxml"));
 
-        GridPane rootLayout =  loader.load();
+        GridPane rootLayout = loader.load();
         ((RemoveRuleController) loader.getController()).setRules(rules);
         Scene scene = new Scene(rootLayout, 450, 150);
 

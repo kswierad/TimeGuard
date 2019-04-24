@@ -19,7 +19,6 @@ public class TimeCounter {
     private Stage stage = new Stage();
 
 
-
     public void start() {
 
         root.getChildren().addAll(timeLabel);
@@ -45,10 +44,11 @@ public class TimeCounter {
         stage.show();
     }
 
-    public void setText(String text){
+    public void setText(String text) {
         timeLabel.setText(text);
     }
-    public void setWidthAndHeight(){
+
+    public void setWidthAndHeight() {
         root.applyCss();
         root.layout();
         stage.setWidth(timeLabel.getWidth());

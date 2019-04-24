@@ -10,7 +10,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class Rule {
     private String exePath;
     private List<Time> times;
-    
+
     private State prevState;
     private long prevTimeStamp;
 
