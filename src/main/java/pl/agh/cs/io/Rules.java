@@ -1,16 +1,25 @@
 package pl.agh.cs.io;
 
+import javafx.beans.property.MapProperty;
+import javafx.beans.property.SimpleMapProperty;
+import javafx.collections.FXCollections;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 
 public class Rules implements Consumer<OpenWindowsSnapshot> {
-    private ConcurrentHashMap<String, Rule> rules;
+    private MapProperty<String, Rule> rules;
 
     public Rules() {
-        this.rules = new ConcurrentHashMap<>();
+        this.rules = new SimpleMapProperty<>(FXCollections.observableHashMap());
     }
+
+    public MapProperty<String, Rule> rulesProperty() {
+        return rules;
+    }
+
 
     public boolean addRule(Rule rule) {
         if (rules.containsKey(rule.getExePath())) {
@@ -69,7 +78,7 @@ public class Rules implements Consumer<OpenWindowsSnapshot> {
     }
 
     public ConcurrentHashMap<String, Rule> getRules() {
-        return rules;
+        return new ConcurrentHashMap<>(rules);
     }
 
     @Override

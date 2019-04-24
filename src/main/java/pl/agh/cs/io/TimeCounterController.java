@@ -1,5 +1,7 @@
 package pl.agh.cs.io;
 
+import javafx.application.Platform;
+
 import java.util.HashMap;
 
 public class TimeCounterController {
@@ -13,7 +15,10 @@ public class TimeCounterController {
 
     public void accept(WindowsPerExe foregroundWindow, HashMap<String, Rule> rulesCopy) {
         if(rulesCopy.containsKey(foregroundWindow.getExePath())) {
-            timeCounter.setText(rulesCopy.get(foregroundWindow.getExePath()).toString());
+            Platform.runLater(() -> {
+                timeCounter.setText(rulesCopy.get(foregroundWindow.getExePath()).toString());
+                timeCounter.setWidthAndHeight();
+            });
         }
     }
 

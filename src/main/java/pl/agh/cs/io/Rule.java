@@ -79,6 +79,6 @@ public class Rule {
         }
         bg += fg;
         DecimalFormat df2 = new DecimalFormat("#.##");
-        return "\nRule " + exePath + "\nFG: " + df2.format(fg) + ", BG: " + df2.format(bg);
+        return "Rule " + exePath + "\nFG: " + df2.format(fg) + ", BG: " + df2.format(bg);
     }
 }
