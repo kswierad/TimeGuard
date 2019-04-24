@@ -1,22 +1,21 @@
 package pl.agh.cs.io;
 
-import java.util.List;
 import java.util.Map;
 
 public class OpenWindowsSnapshot {
-    private WindowsPerExe foregroundWindow;
-    private Map<String, WindowsPerExe> allWindows;
+    private ProcessesPerExe foregroundWindow;
+    private Map<String, ProcessesPerExe> allWindows;
 
-    public OpenWindowsSnapshot(WindowsPerExe foregroundWindow, Map<String, WindowsPerExe> backgroundWindows) {
+    public OpenWindowsSnapshot(ProcessesPerExe foregroundWindow, Map<String, ProcessesPerExe> backgroundWindows) {
         this.foregroundWindow = foregroundWindow;
         this.allWindows = backgroundWindows;
     }
 
-    public WindowsPerExe getForegroundWindow() {
+    public ProcessesPerExe getForegroundWindow() {
         return foregroundWindow;
     }
 
-    public Map<String, WindowsPerExe> getAllWindows() {
+    public Map<String, ProcessesPerExe> getAllWindows() {
         return allWindows;
     }
 

@@ -1,6 +1,9 @@
 package pl.agh.cs.io;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -14,29 +17,32 @@ public abstract class WindowsListenerRunner {
 
     public static void run(Consumer<OpenWindowsSnapshot> callback) {
         WindowsListenerRunner.callback = callback;
-        executorService.scheduleAtFixedRate(newGetOpenWindowsTask(), POLLING_DELAY_MILLIS, POLLING_DELAY_MILLIS, TimeUnit.MILLISECONDS);
+        executorService.scheduleAtFixedRate(newGetOpenWindowsTask(),
+                POLLING_DELAY_MILLIS, POLLING_DELAY_MILLIS,
+                TimeUnit.MILLISECONDS);
     }
 
     private static Runnable newGetOpenWindowsTask() {
         return () -> {
-            Window foregroundWindow = WindowsApiFacade.getForegroundWindow();
-            List<Window> windows = WindowsApiFacade.getOpenWindows();
-            Map<String, WindowsPerExe> exeWindows = toWindowsPerExeMap(windows);
-            WindowsPerExe foregroundWindowPerExe = exeWindows.remove(foregroundWindow.getExePath());
-            if (foregroundWindowPerExe == null)
-                foregroundWindowPerExe = WindowsPerExe.fromWindow(foregroundWindow);
+            Window foregroundWindow = WindowsApi.getForegroundWindow();
+            List<Window> windows = WindowsApi.getOpenWindows();
+            Map<String, ProcessesPerExe> exeWindows = toWindowsPerExeMap(windows);
+            ProcessesPerExe foregroundWindowPerExe = exeWindows.remove(foregroundWindow.getExePath());
+            if (foregroundWindowPerExe == null) {
+                foregroundWindowPerExe = ProcessesPerExe.fromWindow(foregroundWindow);
+            }
             OpenWindowsSnapshot snapshot = new OpenWindowsSnapshot(foregroundWindowPerExe, exeWindows);
             callback.accept(snapshot);
         };
     }
 
-    private static Map<String, WindowsPerExe> toWindowsPerExeMap(List<Window> windows) {
-        Map<String, WindowsPerExe> perExeWindows = new HashMap<>();
+    private static Map<String, ProcessesPerExe> toWindowsPerExeMap(List<Window> windows) {
+        Map<String, ProcessesPerExe> perExeWindows = new HashMap<>();
         Map<String, Set<Integer>> ids = windows
                 .stream()
                 .collect(Collectors.groupingBy(Window::getExePath,
                         Collectors.mapping(Window::getProcessId, Collectors.toSet())));
-        ids.forEach((k, v) -> perExeWindows.put(k, new WindowsPerExe(k, v)));
+        ids.forEach((k, v) -> perExeWindows.put(k, new ProcessesPerExe(k, v)));
         perExeWindows.remove("");
         return perExeWindows;
     }

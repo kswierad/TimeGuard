@@ -4,13 +4,13 @@ public class Rule {
     private String exePath;
     private Time time;
 
-    public Rule(String path){
+    public Rule(String path) {
         this.exePath = path;
         this.time = new Time();
     }
 
     public void handle(State state) {
-        switch (state){
+        switch (state) {
             case FG:
                 time.addFgTime();
                 break;

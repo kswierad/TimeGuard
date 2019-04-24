@@ -2,7 +2,9 @@ package pl.agh.cs.io;
 
 import com.sun.jna.Native;
 import com.sun.jna.Pointer;
-import com.sun.jna.platform.win32.*;
+import com.sun.jna.platform.win32.Kernel32;
+import com.sun.jna.platform.win32.Psapi;
+import com.sun.jna.platform.win32.User32;
 import com.sun.jna.platform.win32.WinDef.HWND;
 import com.sun.jna.platform.win32.WinNT.HANDLE;
 import com.sun.jna.platform.win32.WinUser.WNDENUMPROC;
@@ -14,7 +16,7 @@ import java.util.List;
 import static com.sun.jna.platform.win32.WinNT.PROCESS_QUERY_INFORMATION;
 import static com.sun.jna.platform.win32.WinNT.PROCESS_TERMINATE;
 
-public class WindowsApiFacade {
+public class WindowsApi {
     private final static int MAX_PATH_BYTES = 1024;
 
     public static List<Window> getOpenWindows() {
