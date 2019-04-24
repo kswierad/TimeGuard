@@ -9,14 +9,17 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
-public class TimeCounter extends Application{
+public class TimeCounter {
 
     private double xOffset = 0, yOffset = 0;
 
     private Label timeLabel = new Label("0:00");
     private StackPane stackPane = new StackPane();
+    private Stage stage = new Stage();
 
-    public void start(Stage stage) throws Exception{
+
+
+    public void start() {
         stackPane.getChildren().addAll(timeLabel);
         stackPane.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
@@ -37,10 +40,6 @@ public class TimeCounter extends Application{
         stage.setAlwaysOnTop(true);
         stage.setScene(scene);
         stage.show();
-    }
-
-    public static void main(String[] args){
-        launch(args);
     }
 
     public void setText(String text){
