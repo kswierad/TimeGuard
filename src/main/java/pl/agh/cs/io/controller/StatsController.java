@@ -46,7 +46,7 @@ public class StatsController {
         private SimpleDoubleProperty backgroundTime;
 
         public Data() {
-            this("", 0.0,0.0);
+            this("", 0.0, 0.0);
         }
 
         public Data(String name, Double foregroundTime, Double backgroundTime) {
