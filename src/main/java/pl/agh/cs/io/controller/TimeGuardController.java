@@ -9,7 +9,11 @@ import javafx.scene.control.ListView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import pl.agh.cs.io.*;
+import pl.agh.cs.io.Rule;
+import pl.agh.cs.io.Rules;
+import pl.agh.cs.io.TimeCounterController;
+import pl.agh.cs.io.WindowsListenerRunner;
+import pl.agh.cs.io.TimeGuard;
 
 public class TimeGuardController {
 
