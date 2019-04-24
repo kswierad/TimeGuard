@@ -11,7 +11,7 @@
 
 <GridPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="pl.agh.cs.io.Controller.AddRuleController"
+            fx:controller="pl.agh.cs.io.controller.AddRuleController"
             prefHeight="150.0" prefWidth="400.0">
 
 <!-- Add Header Label -->

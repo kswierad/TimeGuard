@@ -24,14 +24,14 @@ public class TimeGuard extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage) throws Exception{
+    public void start(Stage primaryStage) throws Exception {
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle("TimeGuard");
 
         initRootLayout();
     }
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
         launch(args);
     }
 
@@ -44,7 +44,7 @@ public class TimeGuard extends Application {
             loader.setLocation(TimeGuard.class.getResource("/TimeGuard.fxml"));
             VBox rootLayout =  loader.load();
 
-            Scene scene = new Scene(rootLayout,300,600);
+            Scene scene = new Scene(rootLayout, 300, 600);
 
             primaryStage.setScene(scene);
             primaryStage.show();

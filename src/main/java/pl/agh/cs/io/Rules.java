@@ -16,7 +16,9 @@ public class Rules implements Consumer<OpenWindowsSnapshot> {
         this.rules = new SimpleMapProperty<>(FXCollections.observableHashMap());
     }
 
-    public MapProperty<String, Rule> rulesProperty() { return rules; }
+    public MapProperty<String, Rule> rulesProperty() {
+        return rules;
+    }
 
 
     public boolean addRule(Rule rule) {

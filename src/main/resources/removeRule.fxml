@@ -9,7 +9,7 @@
 
 <GridPane xmlns="http://javafx.com/javafx"
           xmlns:fx="http://javafx.com/fxml"
-          fx:controller="pl.agh.cs.io.Controller.RemoveRuleController"
+          fx:controller="pl.agh.cs.io.controller.RemoveRuleController"
           prefHeight="150.0" prefWidth="400.0">
 
     <!-- Add Header Label -->

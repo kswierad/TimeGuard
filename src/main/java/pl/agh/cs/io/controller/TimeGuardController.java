@@ -1,4 +1,4 @@
-package pl.agh.cs.io.Controller;
+package pl.agh.cs.io.controller;
 
 import javafx.collections.MapChangeListener;
 import javafx.event.ActionEvent;
@@ -28,10 +28,10 @@ public class TimeGuardController {
         WindowsListenerRunner.run(snapshot -> rules.accept(snapshot));
         rules.rulesProperty().addListener(
                 (MapChangeListener.Change<? extends String, ? extends Rule> change) -> {
-                    if(change.wasRemoved()){
+                    if (change.wasRemoved()) {
                         listOfRules.getItems().remove(change.getKey());
                     }
-                    if(change.wasAdded()){
+                    if (change.wasAdded()) {
                         listOfRules.getItems().add(change.getKey());
                     }
         }
@@ -48,7 +48,7 @@ public class TimeGuardController {
 
         VBox rootLayout =  loader.load();
         ((StatsController) loader.getController()).setRules(rules);
-        Scene scene = new Scene(rootLayout,450,600);
+        Scene scene = new Scene(rootLayout, 450, 600);
 
         statsWindow.setScene(scene);
         statsWindow.show();
@@ -63,7 +63,7 @@ public class TimeGuardController {
 
         GridPane rootLayout =  loader.load();
         ((AddRuleController) loader.getController()).setRules(rules);
-        Scene scene = new Scene(rootLayout,450,150);
+        Scene scene = new Scene(rootLayout, 450, 150);
 
         addRuleWindow.setScene(scene);
         addRuleWindow.show();
@@ -78,7 +78,7 @@ public class TimeGuardController {
 
         GridPane rootLayout =  loader.load();
         ((RemoveRuleController) loader.getController()).setRules(rules);
-        Scene scene = new Scene(rootLayout,450,150);
+        Scene scene = new Scene(rootLayout, 450, 150);
 
         removeRuleWindow.setScene(scene);
         removeRuleWindow.show();

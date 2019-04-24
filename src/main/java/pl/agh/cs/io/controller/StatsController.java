@@ -1,7 +1,6 @@
-package pl.agh.cs.io.Controller;
+package pl.agh.cs.io.controller;
 
 import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
@@ -27,10 +26,10 @@ public class StatsController {
     }
 
 
-    public void setRules(Rules rules){
+    public void setRules(Rules rules) {
         this.rules = rules;
         data.setEditable(true);
-        for(String key : rules.getRules().keySet()){
+        for (String key : rules.getRules().keySet()) {
             Data dataForKey = new Data(key, rules.getRules().get(key).getTimes().stream().
                     filter(time -> time.getType().equals(State.FG)).map(Time::getAmount).reduce(0.0, Double::sum),
                     rules.getRules().get(key).getTimes().stream().filter(time -> time.getType().equals(State.BG)).
@@ -41,7 +40,7 @@ public class StatsController {
 
 
 
-    public class Data{
+    public class Data {
         private SimpleStringProperty name;
         private SimpleDoubleProperty foregroundTime;
         private SimpleDoubleProperty backgroundTime;
@@ -50,7 +49,7 @@ public class StatsController {
             this("", 0.0,0.0);
         }
 
-        public Data(String name, Double foregroundTime, Double backgroundTime){
+        public Data(String name, Double foregroundTime, Double backgroundTime) {
             this.name = new SimpleStringProperty(name);
             this.backgroundTime = new SimpleDoubleProperty(backgroundTime);
             this.foregroundTime = new SimpleDoubleProperty(foregroundTime);

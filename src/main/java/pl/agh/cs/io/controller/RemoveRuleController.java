@@ -1,4 +1,4 @@
-package pl.agh.cs.io.Controller;
+package pl.agh.cs.io.controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -9,8 +9,7 @@ import javafx.stage.Stage;
 import pl.agh.cs.io.Rule;
 import pl.agh.cs.io.Rules;
 
-public class AddRuleController {
-
+public class RemoveRuleController {
     Rules rules;
 
     @FXML
@@ -21,21 +20,20 @@ public class AddRuleController {
 
     @FXML
     protected void handleSubmitButtonAction(ActionEvent event) {
-        if(pathField.getText().isEmpty()){
+        if (pathField.getText().isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Empty Path");
             alert.setHeaderText("You entered an empty Path");
             alert.setContentText("Please enter a correct path!");
             alert.showAndWait();
         }
-        System.out.println(pathField.getText());
-        rules.addRule(new Rule(pathField.getText()));
+        rules.removeRule(new Rule(pathField.getText()));
         Stage stage  = (Stage) submitButton.getScene().getWindow();
         stage.close();
 
     }
 
-    public void setRules(Rules rules){
+    public void setRules(Rules rules) {
         this.rules = rules;
     }
 }
