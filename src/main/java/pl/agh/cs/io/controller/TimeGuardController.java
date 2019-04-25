@@ -11,13 +11,15 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import pl.agh.cs.io.Rule;
 import pl.agh.cs.io.Rules;
-import pl.agh.cs.io.TimeGuard;
+import pl.agh.cs.io.TimeCounterController;
 import pl.agh.cs.io.WindowsListenerRunner;
+import pl.agh.cs.io.TimeGuard;
 
 public class TimeGuardController {
 
 
     public Rules rules;
+    TimeCounterController timeCounterController = new TimeCounterController();
 
     @FXML
     ListView<String> listOfRules;
@@ -25,7 +27,10 @@ public class TimeGuardController {
     @FXML
     public void initialize() {
         rules = new Rules();
-        WindowsListenerRunner.run(snapshot -> rules.accept(snapshot));
+        WindowsListenerRunner.run(snapshot -> {
+            rules.accept(snapshot);
+            timeCounterController.accept(snapshot.getForegroundWindow(), rules.getRulesCopy());
+        });
         rules.rulesProperty().addListener(
                 (MapChangeListener.Change<? extends String, ? extends Rule> change) -> {
                     if (change.wasRemoved()) {
@@ -34,7 +39,7 @@ public class TimeGuardController {
                     if (change.wasAdded()) {
                         listOfRules.getItems().add(change.getKey());
                     }
-        }
+                }
 
         );
     }
@@ -46,7 +51,7 @@ public class TimeGuardController {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(TimeGuard.class.getResource("/statistics.fxml"));
 
-        VBox rootLayout =  loader.load();
+        VBox rootLayout = loader.load();
         ((StatsController) loader.getController()).setRules(rules);
         Scene scene = new Scene(rootLayout, 450, 600);
 
@@ -61,7 +66,7 @@ public class TimeGuardController {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(TimeGuard.class.getResource("/addRule.fxml"));
 
-        GridPane rootLayout =  loader.load();
+        GridPane rootLayout = loader.load();
         ((AddRuleController) loader.getController()).setRules(rules);
         Scene scene = new Scene(rootLayout, 450, 150);
 
@@ -76,7 +81,7 @@ public class TimeGuardController {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(TimeGuard.class.getResource("/removeRule.fxml"));
 
-        GridPane rootLayout =  loader.load();
+        GridPane rootLayout = loader.load();
         ((RemoveRuleController) loader.getController()).setRules(rules);
         Scene scene = new Scene(rootLayout, 450, 150);
 

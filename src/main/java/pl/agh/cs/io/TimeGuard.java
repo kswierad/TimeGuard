@@ -36,13 +36,12 @@ public class TimeGuard extends Application {
     }
 
 
-
     private void initRootLayout() {
         try {
 
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(TimeGuard.class.getResource("/TimeGuard.fxml"));
-            VBox rootLayout =  loader.load();
+            VBox rootLayout = loader.load();
 
             Scene scene = new Scene(rootLayout, 300, 600);
 
