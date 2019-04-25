@@ -1,6 +1,7 @@
 package pl.agh.cs.io.controller;
 
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
@@ -8,6 +9,8 @@ import javafx.scene.control.TableView;
 import pl.agh.cs.io.ActivityTime;
 import pl.agh.cs.io.Rules;
 import pl.agh.cs.io.WindowState;
+
+import java.util.concurrent.TimeUnit;
 
 public class StatsController {
 
@@ -17,8 +20,8 @@ public class StatsController {
     @FXML
     private TableView<Data> data;
     @FXML private TableColumn<Data, String> name;
-    @FXML private TableColumn<Data, Integer> foregroundTime;
-    @FXML private TableColumn<Data, Integer> backgroundTime;
+    @FXML private TableColumn<Data, String> foregroundTime;
+    @FXML private TableColumn<Data, String> backgroundTime;
 
     @FXML
     public void initialize() {
@@ -43,8 +46,8 @@ public class StatsController {
 
     public class Data {
         private SimpleStringProperty name;
-        private SimpleDoubleProperty foregroundTime;
-        private SimpleDoubleProperty backgroundTime;
+        private SimpleStringProperty foregroundTime;
+        private SimpleStringProperty backgroundTime;
 
         public Data() {
             this("", 0.0, 0.0);
@@ -52,8 +55,30 @@ public class StatsController {
 
         public Data(String name, Double foregroundTime, Double backgroundTime) {
             this.name = new SimpleStringProperty(name);
-            this.backgroundTime = new SimpleDoubleProperty(backgroundTime);
-            this.foregroundTime = new SimpleDoubleProperty(foregroundTime);
+            this.backgroundTime = new SimpleStringProperty(secondsToString(backgroundTime));
+            this.foregroundTime = new SimpleStringProperty(secondsToString(foregroundTime));
+        }
+
+        private String secondsToString(Double seconds) {
+            long longSeconds = seconds.longValue();
+            StringBuilder builder = new StringBuilder();
+            long uptime = TimeUnit.SECONDS.toDays(longSeconds);
+            if (uptime > 0) {
+                builder.append(TimeUnit.SECONDS.toDays(longSeconds)).append(":");
+                longSeconds = longSeconds - TimeUnit.DAYS.toSeconds(uptime);
+            }
+            uptime = TimeUnit.SECONDS.toHours(longSeconds);
+            if (uptime > 0) {
+                builder.append(TimeUnit.SECONDS.toHours(longSeconds)).append(":");
+                longSeconds = longSeconds - TimeUnit.HOURS.toSeconds(uptime);
+            }
+            uptime = TimeUnit.SECONDS.toMinutes(longSeconds);
+            if (uptime > 0) {
+                builder.append(TimeUnit.SECONDS.toMinutes(longSeconds)).append(":");
+                longSeconds = longSeconds - TimeUnit.MINUTES.toSeconds(uptime);
+            }
+            builder.append(longSeconds);
+            return builder.toString();
         }
 
         public String getName() {
@@ -68,27 +93,27 @@ public class StatsController {
             this.name.set(name);
         }
 
-        public double getForegroundTime() {
+        public String getForegroundTime() {
             return foregroundTime.get();
         }
 
-        public SimpleDoubleProperty foregroundTimeProperty() {
+        public SimpleStringProperty foregroundTimeProperty() {
             return foregroundTime;
         }
 
-        public void setForegroundTime(int foregroundTime) {
+        public void setForegroundTime(String foregroundTime) {
             this.foregroundTime.set(foregroundTime);
         }
 
-        public double getBackgroundTime() {
+        public String getBackgroundTime() {
             return backgroundTime.get();
         }
 
-        public SimpleDoubleProperty backgroundTimeProperty() {
+        public SimpleStringProperty backgroundTimeProperty() {
             return backgroundTime;
         }
 
-        public void setBackgroundTime(int backgroundTime) {
+        public void setBackgroundTime(String backgroundTime) {
             this.backgroundTime.set(backgroundTime);
         }
     }
