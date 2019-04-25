@@ -16,7 +16,7 @@ import java.util.List;
 import static com.sun.jna.platform.win32.WinNT.PROCESS_QUERY_INFORMATION;
 import static com.sun.jna.platform.win32.WinNT.PROCESS_TERMINATE;
 
-public class WindowsApiFacade {
+public class WindowsApi {
     private final static int MAX_PATH_BYTES = 1024;
 
     public static List<Window> getOpenWindows() {

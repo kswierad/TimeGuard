@@ -29,28 +29,26 @@ public class Rules implements Consumer<OpenWindowsSnapshot> {
         return true;
     }
 
-    public boolean removeRule(String path) {
+    public void removeRule(String path) {
         if (rules.containsKey(path)) {
             rules.remove(path);
-            return true;
         }
-        return false;
     }
 
-    public boolean removeRule(Rule rule) {
-        return removeRule(rule.getExePath());
+    public void removeRule(Rule rule) {
+        removeRule(rule.getExePath());
     }
 
     @Override
     public void accept(OpenWindowsSnapshot openWindowsSnapshot) {
         HashMap<String, Rule> unchecked = getRulesCopy();
 
-        WindowsPerExe foreground = openWindowsSnapshot.getForegroundWindow();
-        Map<String, WindowsPerExe> allWindows = openWindowsSnapshot.getAllWindows();
+        ProcessesPerExe foreground = openWindowsSnapshot.getForegroundWindow();
+        Map<String, ProcessesPerExe> allWindows = openWindowsSnapshot.getAllWindows();
 
         // handle foreground window
         if (unchecked.containsKey(foreground.getExePath())) {
-            rules.get(foreground.getExePath()).handle(State.FG);
+            rules.get(foreground.getExePath()).handle(WindowState.FOREGROUND);
             unchecked.remove(foreground.getExePath());
             allWindows.remove(foreground.getExePath());
         }
@@ -58,14 +56,14 @@ public class Rules implements Consumer<OpenWindowsSnapshot> {
         // handle rest of windows
         for (String exePath : allWindows.keySet()) {
             if (unchecked.containsKey(exePath)) {
-                rules.get(exePath).handle(State.BG);
+                rules.get(exePath).handle(WindowState.BACKGROUND);
                 unchecked.remove(exePath);
             }
         }
 
         // handle rules that are closed
         for (Rule rule : unchecked.values()) {
-            rules.get(rule.getExePath()).handle(State.CLOSED);
+            rules.get(rule.getExePath()).handle(WindowState.CLOSED);
         }
     }
 

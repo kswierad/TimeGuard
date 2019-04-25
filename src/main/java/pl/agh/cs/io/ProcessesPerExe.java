@@ -5,19 +5,19 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class WindowsPerExe {
+public class ProcessesPerExe {
     private String exePath;
     private Set<Integer> processIds;
 
-    public WindowsPerExe(String exePath, Set<Integer> processIds) {
+    public ProcessesPerExe(String exePath, Set<Integer> processIds) {
         this.exePath = exePath;
         this.processIds = processIds;
     }
 
-    public static WindowsPerExe fromWindow(Window window) {
+    public static ProcessesPerExe fromWindow(Window window) {
         int processId = window.getProcessId();
         List<Integer> processIdList = Collections.singletonList(processId);
-        return new WindowsPerExe(window.getExePath(),
+        return new ProcessesPerExe(window.getExePath(),
                 new HashSet<>(processIdList));
     }
 
@@ -29,8 +29,8 @@ public class WindowsPerExe {
         return processIds;
     }
 
-    public void close() {
-        processIds.forEach(WindowsApiFacade::terminateProces);
+    public void terminate() {
+        processIds.forEach(WindowsApi::terminateProces);
     }
 
     @Override

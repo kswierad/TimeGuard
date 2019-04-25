@@ -36,11 +36,14 @@ checkstyleTest {
 
 repositories {
     mavenCentral()
+    jcenter()
 }
 
 dependencies {
     compile group: 'net.java.dev.jna', name: 'jna', version: '5.2.0'
     compile group: 'net.java.dev.jna', name: 'jna-platform', version: '5.2.0'
+    testCompile "org.mockito:mockito-core:2.+"
+    testCompile 'junit:junit:4.12'
 
 }
 

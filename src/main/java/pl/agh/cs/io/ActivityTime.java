@@ -1,13 +1,12 @@
 package pl.agh.cs.io;
 
-// holds type of activity (FG, BG), when started, and how long lasted
-public class Time {
-    private final State type;
+public class ActivityTime {
+    private final WindowState state;
     private final double amount;
     private final long timestamp;
 
-    public Time(State type, double amount, long timestamp) {
-        this.type = type;
+    public ActivityTime(WindowState state, double amount, long timestamp) {
+        this.state = state;
         this.amount = amount;
         this.timestamp = timestamp;
     }
@@ -16,8 +15,8 @@ public class Time {
         return amount;
     }
 
-    public State getType() {
-        return type;
+    public WindowState getState() {
+        return state;
     }
 
     public long getTimestamp() {

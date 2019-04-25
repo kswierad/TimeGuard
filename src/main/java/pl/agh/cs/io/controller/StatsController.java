@@ -5,9 +5,9 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import pl.agh.cs.io.ActivityTime;
 import pl.agh.cs.io.Rules;
-import pl.agh.cs.io.State;
-import pl.agh.cs.io.Time;
+import pl.agh.cs.io.WindowState;
 
 public class StatsController {
 
@@ -31,9 +31,10 @@ public class StatsController {
         data.setEditable(true);
         for (String key : rules.getRules().keySet()) {
             Data dataForKey = new Data(key, rules.getRules().get(key).getTimes().stream().
-                    filter(time -> time.getType().equals(State.FG)).map(Time::getAmount).reduce(0.0, Double::sum),
-                    rules.getRules().get(key).getTimes().stream().filter(time -> time.getType().equals(State.BG)).
-                            map(Time::getAmount).reduce(0.0, Double::sum));
+                    filter(time -> time.getState().equals(WindowState.FOREGROUND)).map(ActivityTime::getAmount)
+                        .reduce(0.0, Double::sum),
+                    rules.getRules().get(key).getTimes().stream().filter(time -> time.getState()
+                            .equals(WindowState.BACKGROUND)).map(ActivityTime::getAmount).reduce(0.0, Double::sum));
             data.getItems().add(dataForKey);
         }
     }
