@@ -49,7 +49,9 @@ public class Rule {
     }
 
     public List<ActivityTime> getTimes() {
-        return Collections.unmodifiableList(times);
+        List<ActivityTime> timesCopy = new CopyOnWriteArrayList<>(times);
+        timesCopy.add(new ActivityTime(prevState, (getTimestamp() - prevTimeStamp) / 1000, getTimestamp()));
+        return Collections.unmodifiableList(timesCopy);
     }
 
     public void resetTimes() {
