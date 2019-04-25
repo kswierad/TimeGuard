@@ -9,38 +9,38 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Rule {
     private String exePath;
-    private List<Time> times;
+    private List<ActivityTime> times;
     
-    private State prevState;
+    private WindowState prevState;
     private long prevTimeStamp;
 
     public Rule(String path) {
         this.exePath = path;
         this.times = new CopyOnWriteArrayList<>();
-        this.prevState = State.CLOSED;
+        this.prevState = WindowState.CLOSED;
     }
 
-    public void handle(State state) {
-        if (prevState == State.FG || prevState == State.BG) {
-            if (prevState != state && prevState != State.CLOSED) {
+    public void handle(WindowState state) {
+        if (prevState == WindowState.FOREGROUND || prevState == WindowState.BACKGROUND) {
+            if (prevState != state && prevState != WindowState.CLOSED) {
                 createNewTime(prevState);
             }
         }
 
         if (state != prevState) {
-            prevTimeStamp = getTimeStamp();
+            prevTimeStamp = getTimestamp();
             prevState = state;
         }
     }
 
-    private long getTimeStamp() {
+    private long getTimestamp() {
         //get number of milliseconds since January 1, 1970
         return Timestamp.valueOf(LocalDateTime.now()).getTime();
     }
 
-    private void createNewTime(State type) {
-        double amount = (double) (getTimeStamp() - prevTimeStamp) / 1000;
-        Time time = new Time(type, amount, getTimeStamp());
+    private void createNewTime(WindowState state) {
+        double amount = (double) (getTimestamp() - prevTimeStamp) / 1000;
+        ActivityTime time = new ActivityTime(state, amount, getTimestamp());
         times.add(time);
     }
 
@@ -48,7 +48,7 @@ public class Rule {
         return exePath;
     }
 
-    public List<Time> getTimes() {
+    public List<ActivityTime> getTimes() {
         return Collections.unmodifiableList(times);
     }
 
@@ -59,26 +59,26 @@ public class Rule {
     @Override
     public String toString() {
         double fg = 0, bg = 0;
-        for (Time time : times) {
-            switch (time.getType()) {
-                case FG:
+        for (ActivityTime time : times) {
+            switch (time.getState()) {
+                case FOREGROUND:
                     fg += time.getAmount();
                     break;
-                case BG:
+                case BACKGROUND:
                     bg += time.getAmount();
                     break;
             }
         }
         switch (prevState) {
-            case FG:
-                fg += (getTimeStamp() - prevTimeStamp) / 1000;
+            case FOREGROUND:
+                fg += (getTimestamp() - prevTimeStamp) / 1000;
                 break;
-            case BG:
-                bg += (getTimeStamp() - prevTimeStamp) / 1000;
+            case BACKGROUND:
+                bg += (getTimestamp() - prevTimeStamp) / 1000;
                 break;
         }
         bg += fg;
         DecimalFormat df2 = new DecimalFormat("#.##");
-        return "\nRule " + exePath + "\nFG: " + df2.format(fg) + ", BG: " + df2.format(bg);
+        return "\nRule " + exePath + "\nFOREGROUND: " + df2.format(fg) + ", BACKGROUND: " + df2.format(bg);
     }
 }
