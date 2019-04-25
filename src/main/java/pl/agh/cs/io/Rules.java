@@ -34,8 +34,8 @@ public class Rules implements Consumer<OpenWindowsSnapshot> {
     public void accept(OpenWindowsSnapshot openWindowsSnapshot) {
         HashMap<String, Rule> unchecked = getRulesCopy();
 
-        WindowsPerExe foreground = openWindowsSnapshot.getForegroundWindow();
-        Map<String, WindowsPerExe> allWindows = openWindowsSnapshot.getAllWindows();
+        ProcessesPerExe foreground = openWindowsSnapshot.getForegroundWindow();
+        Map<String, ProcessesPerExe> allWindows = openWindowsSnapshot.getAllWindows();
 
         // handle foreground window
         if (unchecked.containsKey(foreground.getExePath())) {
