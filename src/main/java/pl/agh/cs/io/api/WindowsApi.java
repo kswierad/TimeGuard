@@ -1,7 +1,6 @@
-package pl.agh.cs.io;
+package pl.agh.cs.io.api;
 
 import com.sun.jna.Native;
-import com.sun.jna.Pointer;
 import com.sun.jna.platform.win32.Kernel32;
 import com.sun.jna.platform.win32.Psapi;
 import com.sun.jna.platform.win32.User32;
@@ -19,23 +18,23 @@ import static com.sun.jna.platform.win32.WinNT.PROCESS_TERMINATE;
 public class WindowsApi {
     private final static int MAX_PATH_BYTES = 1024;
 
-    public static List<Window> getOpenWindows() {
-        List<Window> windows = new LinkedList<>();
+    public static List<PathProcessId> getOpenWindowsPathProcessIds() {
+        List<PathProcessId> windows = new LinkedList<>();
         WNDENUMPROC proc = (hwnd, data) -> {
-            Window window = newWindow(hwnd);
-            windows.add(window);
+            PathProcessId pathProcessId = newPathProcessId(hwnd);
+            windows.add(pathProcessId);
             return true;
         };
         User32.INSTANCE.EnumWindows(proc, null);
         return windows;
     }
 
-    public static Window getForegroundWindow() {
+    public static PathProcessId getForegroundWindowPathProcessId() {
         HWND hwnd = User32.INSTANCE.GetForegroundWindow();
-        return newWindow(hwnd);
+        return newPathProcessId(hwnd);
     }
 
-    public static void terminateProces(int processId) {
+    public static void terminateProcess(int processId) {
         HANDLE process = getProcessHandle(processId);
         Kernel32.INSTANCE.TerminateProcess(process, 0);
     }
@@ -50,15 +49,10 @@ public class WindowsApi {
         return Kernel32.INSTANCE.OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_TERMINATE, false, processId);
     }
 
-    private static Window newWindow(HWND hwnd) {
+    private static PathProcessId newPathProcessId(HWND hwnd) {
         int processId = getProcessIdForWindow(hwnd);
         String exePath = getExePathForProcess(processId);
-        return new Window(processId, exePath);
-    }
-
-    private static HWND longToHwnd(long id) {
-        Pointer pointer = new Pointer(id);
-        return new HWND(pointer);
+        return new PathProcessId(processId, exePath);
     }
 
     private static String getExePathForProcess(int processId) {
