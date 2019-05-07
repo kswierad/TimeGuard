@@ -1,6 +1,7 @@
 package pl.agh.cs.io;
 
 import javafx.application.Platform;
+import pl.agh.cs.io.api.ProcessIdsPerPath;
 
 import java.util.HashMap;
 
@@ -13,10 +14,10 @@ public class TimeCounterController {
         timeCounter.start();
     }
 
-    public void accept(ProcessesPerExe foregroundWindow, HashMap<String, Rule> rulesCopy) {
-        if (rulesCopy.containsKey(foregroundWindow.getExePath())) {
+    public void accept(ProcessIdsPerPath foregroundWindow, HashMap<String, Rule> rulesCopy) {
+        if (rulesCopy.containsKey(foregroundWindow.getPath())) {
             Platform.runLater(() -> {
-                timeCounter.setText(rulesCopy.get(foregroundWindow.getExePath()).toString());
+                timeCounter.setText(rulesCopy.get(foregroundWindow.getPath()).toString());
                 timeCounter.setWidthAndHeight();
             });
         }

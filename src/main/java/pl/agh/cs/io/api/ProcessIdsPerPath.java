@@ -1,42 +1,42 @@
-package pl.agh.cs.io;
+package pl.agh.cs.io.api;
 
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class ProcessesPerExe {
-    private String exePath;
+public class ProcessIdsPerPath {
+    private String path;
     private Set<Integer> processIds;
 
-    public ProcessesPerExe(String exePath, Set<Integer> processIds) {
-        this.exePath = exePath;
+    public ProcessIdsPerPath(String path, Set<Integer> processIds) {
+        this.path = path;
         this.processIds = processIds;
     }
 
-    public static ProcessesPerExe fromWindow(Window window) {
+    public static ProcessIdsPerPath fromWindow(PathProcessId window) {
         int processId = window.getProcessId();
         List<Integer> processIdList = Collections.singletonList(processId);
-        return new ProcessesPerExe(window.getExePath(),
+        return new ProcessIdsPerPath(window.getPath(),
                 new HashSet<>(processIdList));
     }
 
-    public String getExePath() {
-        return exePath;
+    public String getPath() {
+        return path;
     }
 
     public Set<Integer> getProcessIds() {
         return processIds;
     }
 
-    public void terminate() {
-        processIds.forEach(WindowsApi::terminateProces);
+    protected void terminateProcesses() {
+        processIds.forEach(WindowsApi::terminateProcess);
     }
 
     @Override
     public String toString() {
-        return "ExeWindows{" +
-                "exePath='" + exePath + '\'' +
+        return "ProcessIdsPerPath{" +
+                "path='" + path + '\'' +
                 ", processIds=" + processIds +
                 '}';
     }
