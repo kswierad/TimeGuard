@@ -31,7 +31,7 @@ public class StatsController {
         this.rules = rules;
         data.setEditable(true);
         for (String key : rules.getRules().keySet()) {
-            Data dataForKey = new Data(key, rules.getRules().get(key).getTimes().stream().
+            Data dataForKey = new Data(NameConverter.nameFromPath(key), rules.getRules().get(key).getTimes().stream().
                     filter(time -> time.getState().equals(WindowState.FOREGROUND)).map(ActivityTime::getAmount)
                         .reduce(0.0, Double::sum),
                     rules.getRules().get(key).getTimes().stream().filter(time -> time.getState()

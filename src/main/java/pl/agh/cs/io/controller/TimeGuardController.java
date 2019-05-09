@@ -16,9 +16,7 @@ import pl.agh.cs.io.WindowsListenerRunner;
 import pl.agh.cs.io.TimeGuard;
 
 import java.io.File;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class TimeGuardController {
 
@@ -28,10 +26,6 @@ public class TimeGuardController {
 
     @FXML
     ListView<String> listOfRules;
-
-    Map<String, String> nameToPath = new HashMap<>();
-
-
 
     @FXML
     public void initialize() {
@@ -43,12 +37,12 @@ public class TimeGuardController {
         rules.rulesProperty().addListener(
                 (MapChangeListener.Change<? extends String, ? extends Rule> change) -> {
                     if (change.wasRemoved()) {
-                        listOfRules.getItems().remove(nameFromPath(change.getKey()));
-                        nameToPath.remove(nameFromPath(change.getKey()));
+                        listOfRules.getItems().remove(NameConverter.nameFromPath(change.getKey()));
+                        NameConverter.nameToPath.remove(NameConverter.nameFromPath(change.getKey()));
                     }
                     if (change.wasAdded()) {
-                        listOfRules.getItems().add(nameFromPath(change.getKey()));
-                        nameToPath.put(nameFromPath(change.getKey()), change.getKey());
+                        listOfRules.getItems().add(NameConverter.nameFromPath(change.getKey()));
+                        NameConverter.nameToPath.put(NameConverter.nameFromPath(change.getKey()), change.getKey());
                     }
                 }
 
@@ -95,17 +89,12 @@ public class TimeGuardController {
     @FXML
     private void removeRule(ActionEvent event) {
         //listOfRules.getItems().remove(listOfRules.getSelectionModel().getSelectedItem());
-        rules.removeRule(nameToPath.get(listOfRules.getSelectionModel().getSelectedItem()));
+        rules.removeRule(NameConverter.nameToPath.get(listOfRules.getSelectionModel().getSelectedItem()));
     }
 
     @FXML
     private void editRule(ActionEvent event) {
 
-    }
-
-    private String nameFromPath(String path) {
-        String tokens[] = path.split("/");
-        return tokens[tokens.length - 1];
     }
 
 }
