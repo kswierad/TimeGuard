@@ -6,7 +6,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.ListView;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -17,7 +16,9 @@ import pl.agh.cs.io.WindowsListenerRunner;
 import pl.agh.cs.io.TimeGuard;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class TimeGuardController {
 
@@ -27,6 +28,10 @@ public class TimeGuardController {
 
     @FXML
     ListView<String> listOfRules;
+
+    Map<String, String> nameToPath = new HashMap<>();
+
+
 
     @FXML
     public void initialize() {
@@ -38,10 +43,12 @@ public class TimeGuardController {
         rules.rulesProperty().addListener(
                 (MapChangeListener.Change<? extends String, ? extends Rule> change) -> {
                     if (change.wasRemoved()) {
-                        listOfRules.getItems().remove(change.getKey());
+                        listOfRules.getItems().remove(nameFromPath(change.getKey()));
+                        nameToPath.remove(nameFromPath(change.getKey()));
                     }
                     if (change.wasAdded()) {
-                        listOfRules.getItems().add(change.getKey());
+                        listOfRules.getItems().add(nameFromPath(change.getKey()));
+                        nameToPath.put(nameFromPath(change.getKey()), change.getKey());
                     }
                 }
 
@@ -70,7 +77,7 @@ public class TimeGuardController {
         fileChooser.setTitle("Choose a .exe file to monitor:");
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("executable", "*.exe"));
         File file = fileChooser.showOpenDialog(listOfRules.getScene().getWindow());
-        if(file != null) {
+        if (file != null) {
             rules.addRule(new Rule(file.getAbsolutePath()));
         }
     }
@@ -80,19 +87,25 @@ public class TimeGuardController {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Choose any file to monitor:");
         List<File> files = fileChooser.showOpenMultipleDialog(listOfRules.getScene().getWindow());
-        for(File file : files){
+        for (File file : files) {
             rules.addRule(new Rule(file.getAbsolutePath()));
         }
     }
 
     @FXML
     private void removeRule(ActionEvent event) {
-        rules.removeRule(listOfRules.getSelectionModel().getSelectedItem());
+        //listOfRules.getItems().remove(listOfRules.getSelectionModel().getSelectedItem());
+        rules.removeRule(nameToPath.get(listOfRules.getSelectionModel().getSelectedItem()));
     }
 
     @FXML
-    private void editRule(ActionEvent event){
+    private void editRule(ActionEvent event) {
 
+    }
+
+    private String nameFromPath(String path) {
+        String tokens[] = path.split("/");
+        return tokens[tokens.length - 1];
     }
 
 }
