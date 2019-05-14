@@ -10,7 +10,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class Rule {
     private String exePath;
     private List<ActivityTime> times;
-    
+    private RuleRestriction restriction;
+
     private WindowState prevState;
     private long prevTimeStamp;
 
@@ -21,9 +22,14 @@ public class Rule {
     }
 
     public void handle(WindowState state) {
+
         if (prevState == WindowState.FOREGROUND || prevState == WindowState.BACKGROUND) {
             if (prevState != state && prevState != WindowState.CLOSED) {
                 createNewTime(prevState);
+            }
+
+            if (restriction != null) {
+                restriction.checkRestriction();
             }
         }
 
@@ -61,26 +67,16 @@ public class Rule {
     @Override
     public String toString() {
         double fg = 0, bg = 0;
-        for (ActivityTime time : times) {
-            switch (time.getState()) {
-                case FOREGROUND:
-                    fg += time.getAmount();
-                    break;
-                case BACKGROUND:
-                    bg += time.getAmount();
-                    break;
-            }
-        }
-        switch (prevState) {
-            case FOREGROUND:
-                fg += (getTimestamp() - prevTimeStamp) / 1000;
-                break;
-            case BACKGROUND:
-                bg += (getTimestamp() - prevTimeStamp) / 1000;
-                break;
-        }
-        bg += fg;
+
+        fg = ActivityTime.getActivityTimeFromList(this.getTimes(), WindowState.FOREGROUND);
+        bg = ActivityTime.getActivityTimeFromList(this.getTimes(), WindowState.BACKGROUND);
+
         DecimalFormat df2 = new DecimalFormat("#.##");
         return "Rule " + exePath + "\nFOREGROUND: " + df2.format(fg) + ", BACKGROUND: " + df2.format(bg);
+    }
+
+    public void setRestriction(RuleRestriction restriction) {
+        restriction.setRule(this);
+        this.restriction = restriction;
     }
 }
