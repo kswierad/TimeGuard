@@ -5,27 +5,28 @@ import java.time.LocalDateTime;
 
 public class RuleRestriction {
 
-    WindowState state;
-    long permittedNamSec;
-    Rule rule;
-    ExceededUsageAction action;
+    public final WindowState state;
+    public final long permittedNumSec;
+
+    private ExceededUsageAction action;
+    private Rule rule;
 
     private long lastNotification;
     private long numOfSecBetweenNotifications = 5;
 
 
-    public RuleRestriction(WindowState state, long permittedNamSec, ExceededUsageAction action) {
-        this.permittedNamSec = permittedNamSec;
+    public RuleRestriction(WindowState state, long permittedNumSec, ExceededUsageAction action) {
+        this.permittedNumSec = permittedNumSec;
         this.state = state;
         this.lastNotification = 0;
         this.action = action;
     }
 
     public void checkRestriction() {
-        if (rule != null && permittedNamSec > 0) {
+        if (rule != null && permittedNumSec > 0) {
             double usedToday = ActivityTime.getActivityTimeFromList(rule.getTimes(), state);
 
-            if (usedToday > permittedNamSec) {
+            if (usedToday > permittedNumSec) {
                 long currentTime = Timestamp.valueOf(LocalDateTime.now()).getTime();
                 //notify or call method every numOfSecBetweenNotifications seconds after time is exceeded
                 if (currentTime > lastNotification + (1000 * numOfSecBetweenNotifications)) {
@@ -37,8 +38,16 @@ public class RuleRestriction {
         }
     }
 
+    public ExceededUsageAction getAction() {
+        return action;
+    }
+
+    public void setAction(ExceededUsageAction action) {
+        this.action = action;
+    }
 
     public void setRule(Rule rule) {
         this.rule = rule;
     }
+
 }

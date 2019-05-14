@@ -79,4 +79,8 @@ public class Rule {
         restriction.setRule(this);
         this.restriction = restriction;
     }
+
+    public RuleRestriction getRestriction() {
+        return restriction;
+    }
 }
