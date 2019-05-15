@@ -80,6 +80,10 @@ public class Rule {
         this.restriction = restriction;
     }
 
+    public void removeRestriction() {
+        this.restriction = null;
+    }
+
     public RuleRestriction getRestriction() {
         return restriction;
     }

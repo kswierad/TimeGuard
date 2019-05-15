@@ -46,6 +46,14 @@ public class RuleRestriction {
         this.action = action;
     }
 
+    public WindowState getState() {
+        return state;
+    }
+
+    public long getPermittedNumSec() {
+        return permittedNumSec;
+    }
+
     public void setRule(Rule rule) {
         this.rule = rule;
     }
