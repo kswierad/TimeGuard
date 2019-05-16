@@ -12,9 +12,11 @@ import javafx.stage.Stage;
 import pl.agh.cs.io.Rule;
 import pl.agh.cs.io.Rules;
 import pl.agh.cs.io.TimeCounterController;
-import pl.agh.cs.io.WindowsListenerRunner;
+import pl.agh.cs.io.api.windows.WindowsListenerRunner;
 import pl.agh.cs.io.TimeGuard;
 
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.io.File;
 import java.util.List;
 
@@ -29,10 +31,12 @@ public class TimeGuardController {
 
     @FXML
     public void initialize() {
+        ScheduledExecutorService scheduledExecutorService = new ScheduledThreadPoolExecutor(2);
+        WindowsListenerRunner windowsListenerRunner = new WindowsListenerRunner(scheduledExecutorService);
         rules = new Rules();
-        WindowsListenerRunner.run(snapshot -> {
+        windowsListenerRunner.run(snapshot -> {
             rules.accept(snapshot);
-            timeCounterController.accept(snapshot.getForegroundWindow(), rules.getRulesCopy());
+            timeCounterController.accept(snapshot.getForegroundWindowProcessIdsPerPath(), rules.getRulesCopy());
         });
         rules.rulesProperty().addListener(
                 (MapChangeListener.Change<? extends String, ? extends Rule> change) -> {
@@ -81,8 +85,10 @@ public class TimeGuardController {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Choose any file to monitor:");
         List<File> files = fileChooser.showOpenMultipleDialog(listOfRules.getScene().getWindow());
-        for (File file : files) {
-            rules.addRule(new Rule(file.getAbsolutePath()));
+        if (files != null) {
+            for (File file : files) {
+                rules.addRule(new Rule(file.getAbsolutePath()));
+            }
         }
     }
 
