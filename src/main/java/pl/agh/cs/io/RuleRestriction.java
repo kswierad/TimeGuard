@@ -1,5 +1,6 @@
 package pl.agh.cs.io;
 
+import javafx.scene.control.Alert;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
@@ -10,9 +11,10 @@ public class RuleRestriction {
 
     private ExceededUsageAction action;
     private Rule rule;
+    private boolean isDisplayed = false;
 
-    private long lastNotification;
-    private long numOfSecBetweenNotifications = 5;
+    public long lastNotification;
+    public long numOfSecBetweenNotifications = 0;
 
 
     public RuleRestriction(WindowState state, long permittedNumSec, ExceededUsageAction action) {
@@ -23,20 +25,33 @@ public class RuleRestriction {
     }
 
     public void checkRestriction() {
-        if (rule != null && permittedNumSec > 0) {
-            double usedToday = ActivityTime.getActivityTimeFromList(rule.getTimes(), state);
+        if (rule != null && rule.getRestriction().permittedNumSec > 0) {
+            double usedToday = ActivityTime.getActivityTimeFromList(rule.getTimes(), rule.getRestriction().state);
 
-            if (usedToday > permittedNumSec) {
+            if (usedToday > rule.getRestriction().permittedNumSec) {
+                ;
                 long currentTime = Timestamp.valueOf(LocalDateTime.now()).getTime();
                 //notify or call method every numOfSecBetweenNotifications seconds after time is exceeded
-                if (currentTime > lastNotification + (1000 * numOfSecBetweenNotifications)) {
-                    lastNotification = currentTime;
-                    //TODO Notify user
-                    System.out.println("Time used up for " + rule.getExePath() + ", " + action);
+                if ( !isDisplayed &&
+                        currentTime > rule.getRestriction().lastNotification + (1000 * rule.getRestriction().numOfSecBetweenNotifications)) {
+
+                    rule.getRestriction().lastNotification = currentTime;
+                    this.isDisplayed = true;
+                    showAlert(rule);
+                    this.isDisplayed = false;
                 }
             }
         }
     }
+
+    public static void showAlert(Rule rule){
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("WARNING");
+        alert.setContentText("Time on rule " + rule.toString() + " exceeded");
+        alert.showAndWait();
+    }
+
+
 
     public ExceededUsageAction getAction() {
         return action;
