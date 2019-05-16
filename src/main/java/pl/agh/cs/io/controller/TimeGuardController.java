@@ -85,8 +85,10 @@ public class TimeGuardController {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Choose any file to monitor:");
         List<File> files = fileChooser.showOpenMultipleDialog(listOfRules.getScene().getWindow());
-        for (File file : files) {
-            rules.addRule(new Rule(file.getAbsolutePath()));
+        if (files != null) {
+            for (File file : files) {
+                rules.addRule(new Rule(file.getAbsolutePath()));
+            }
         }
     }
 
