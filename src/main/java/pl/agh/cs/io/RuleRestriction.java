@@ -11,10 +11,10 @@ public class RuleRestriction {
 
     private ExceededUsageAction action;
     private Rule rule;
+    private boolean isDisplayed = false;
 
     public long lastNotification;
-    public long numOfSecBetweenNotifications = 5;
-    private boolean isDisplayed = false;
+    public long numOfSecBetweenNotifications = 100;
 
 
     public RuleRestriction(WindowState state, long permittedNumSec, ExceededUsageAction action) {
