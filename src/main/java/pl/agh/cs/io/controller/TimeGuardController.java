@@ -6,8 +6,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.ListView;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import pl.agh.cs.io.Rule;
 import pl.agh.cs.io.Rules;
@@ -17,6 +17,8 @@ import pl.agh.cs.io.TimeGuard;
 
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.io.File;
+import java.util.List;
 
 public class TimeGuardController {
 
@@ -39,10 +41,12 @@ public class TimeGuardController {
         rules.rulesProperty().addListener(
                 (MapChangeListener.Change<? extends String, ? extends Rule> change) -> {
                     if (change.wasRemoved()) {
-                        listOfRules.getItems().remove(change.getKey());
+                        listOfRules.getItems().remove(NameConverter.nameFromPath(change.getKey()));
+                        NameConverter.nameToPath.remove(NameConverter.nameFromPath(change.getKey()));
                     }
                     if (change.wasAdded()) {
-                        listOfRules.getItems().add(change.getKey());
+                        listOfRules.getItems().add(NameConverter.nameFromPath(change.getKey()));
+                        NameConverter.nameToPath.put(NameConverter.nameFromPath(change.getKey()), change.getKey());
                     }
                 }
 
@@ -58,40 +62,43 @@ public class TimeGuardController {
 
         VBox rootLayout = loader.load();
         ((StatsController) loader.getController()).setRules(rules);
-        Scene scene = new Scene(rootLayout, 450, 600);
+        Scene scene = new Scene(rootLayout, 800, 600);
 
         statsWindow.setScene(scene);
         statsWindow.show();
     }
 
     @FXML
-    private void addRule(ActionEvent event) throws Exception {
-        Stage addRuleWindow = new Stage();
-        addRuleWindow.setTitle("Adding new Rule");
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(TimeGuard.class.getResource("/addRule.fxml"));
+    private void addExe(ActionEvent event) {
 
-        GridPane rootLayout = loader.load();
-        ((AddRuleController) loader.getController()).setRules(rules);
-        Scene scene = new Scene(rootLayout, 450, 150);
-
-        addRuleWindow.setScene(scene);
-        addRuleWindow.show();
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Choose a .exe file to monitor:");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("executable", "*.exe"));
+        File file = fileChooser.showOpenDialog(listOfRules.getScene().getWindow());
+        if (file != null) {
+            rules.addRule(new Rule(file.getAbsolutePath()));
+        }
     }
 
     @FXML
-    private void deleteRule(ActionEvent event) throws Exception {
-        Stage removeRuleWindow = new Stage();
-        removeRuleWindow.setTitle("Removing new Rule");
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(TimeGuard.class.getResource("/removeRule.fxml"));
+    private void addFiles(ActionEvent event) throws Exception {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Choose any file to monitor:");
+        List<File> files = fileChooser.showOpenMultipleDialog(listOfRules.getScene().getWindow());
+        for (File file : files) {
+            rules.addRule(new Rule(file.getAbsolutePath()));
+        }
+    }
 
-        GridPane rootLayout = loader.load();
-        ((RemoveRuleController) loader.getController()).setRules(rules);
-        Scene scene = new Scene(rootLayout, 450, 150);
+    @FXML
+    private void removeRule(ActionEvent event) {
+        //listOfRules.getItems().remove(listOfRules.getSelectionModel().getSelectedItem());
+        rules.removeRule(NameConverter.nameToPath.get(listOfRules.getSelectionModel().getSelectedItem()));
+    }
 
-        removeRuleWindow.setScene(scene);
-        removeRuleWindow.show();
+    @FXML
+    private void editRule(ActionEvent event) {
+
     }
 
 }
