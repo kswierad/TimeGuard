@@ -4,9 +4,9 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import pl.agh.cs.io.ActivityTime;
-import pl.agh.cs.io.Rules;
-import pl.agh.cs.io.WindowState;
+import pl.agh.cs.io.model.ActivityTime;
+import pl.agh.cs.io.model.Rules;
+import pl.agh.cs.io.model.WindowState;
 
 import java.util.concurrent.TimeUnit;
 
