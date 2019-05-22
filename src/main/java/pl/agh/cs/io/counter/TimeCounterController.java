@@ -1,6 +1,7 @@
-package pl.agh.cs.io;
+package pl.agh.cs.io.counter;
 
 import javafx.application.Platform;
+import pl.agh.cs.io.model.Rule;
 import pl.agh.cs.io.api.ProcessIdsPerPath;
 
 import java.util.HashMap;

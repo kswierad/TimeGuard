@@ -1,4 +1,4 @@
-package pl.agh.cs.io;
+package pl.agh.cs.io.model;
 
 import javafx.beans.property.MapProperty;
 import javafx.beans.property.SimpleMapProperty;

@@ -1,4 +1,4 @@
-package pl.agh.cs.io;
+package pl.agh.cs.io.counter;
 
 import javafx.event.EventHandler;
 import javafx.scene.Group;
