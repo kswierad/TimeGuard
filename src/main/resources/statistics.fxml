@@ -42,10 +42,18 @@
             <content>
                <AnchorPane prefHeight="200.0" prefWidth="200.0">
                   <children>
-                     <TableView prefHeight="568.0" prefWidth="792.0">
+                     <TableView fx:id="fileData" prefHeight="568.0" prefWidth="792.0">
                        <columns>
-                         <TableColumn prefWidth="630.0" text="fileName" />
-                         <TableColumn prefWidth="161.0" text="fileTime" />
+                         <TableColumn fx:id="fileName" prefWidth="630.0" text="fileName" >
+                           <cellValueFactory>
+                               <PropertyValueFactory property="fileName" />
+                           </cellValueFactory>
+                            </TableColumn>
+                         <TableColumn fx:id="fileTime" prefWidth="161.0" text="fileTime" >
+                           <cellValueFactory>
+                               <PropertyValueFactory property="fileTime" />
+                           </cellValueFactory>
+                         </TableColumn>
                        </columns>
                      </TableView>
                   </children>

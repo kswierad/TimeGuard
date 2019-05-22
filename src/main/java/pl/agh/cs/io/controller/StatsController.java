@@ -52,6 +52,7 @@ public class StatsController {
             data.getItems().add(dataForKey);
         }
         this.fileRules = fileRules;
+        fileData.setEditable(true);
         for (String key : fileRules.getFileRules().keySet()) {
             FileData dataForKey = new FileData(NameConverter.nameFromPath(key),
                     fileRules.getFileRules().get(key).getTimes().stream()
@@ -115,7 +116,7 @@ public class StatsController {
         }
     }
 
-    private class FileData {
+    public class FileData {
         private SimpleStringProperty fileName;
         private SimpleStringProperty fileTime;
 
