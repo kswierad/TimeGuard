@@ -1,6 +1,6 @@
 package pl.agh.cs.io.model;
 
-public class FileActivityTime{
+public class FileActivityTime {
     private final double amount;
     private final long timestamp;
 

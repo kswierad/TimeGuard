@@ -46,7 +46,7 @@ public class FileRules implements Consumer<Map<String, ProcessIdsPerFilepath>> {
     @Override
     public void accept(Map<String, ProcessIdsPerFilepath> newActiveFiles) {
         for (FileRule fileRule: fileRules.values()) {
-            if(newActiveFiles.containsKey(fileRule.getPath())){
+            if (newActiveFiles.containsKey(fileRule.getPath())) {
                 fileRule.activate(newActiveFiles.get(fileRule.getPath()));
             }
             Set<String>  deactivationSet = activeFiles.keySet();

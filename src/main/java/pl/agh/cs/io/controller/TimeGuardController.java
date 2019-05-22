@@ -11,7 +11,7 @@ import javafx.scene.control.Tab;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import pl.agh.cs.io.*;
+import pl.agh.cs.io.TimeGuard;
 import pl.agh.cs.io.api.files.FilesListenerRunner;
 import pl.agh.cs.io.api.windows.WindowsListenerRunner;
 import pl.agh.cs.io.counter.TimeCounterController;
@@ -90,7 +90,7 @@ public class TimeGuardController {
         loader.setLocation(TimeGuard.class.getResource("/statistics.fxml"));
 
         VBox rootLayout = loader.load();
-        ((StatsController) loader.getController()).setRules(rules);
+        ((StatsController) loader.getController()).setRules(fileRules, rules);
         Scene scene = new Scene(rootLayout, 800, 600);
 
         statsWindow.setScene(scene);
@@ -105,7 +105,7 @@ public class TimeGuardController {
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("executable", "*.exe"));
         File file = fileChooser.showOpenDialog(listOfRules.getScene().getWindow());
         if (file != null) {
-            if(NameConverter.nameToPath.containsValue(file.getAbsolutePath())){
+            if (NameConverter.nameToPath.containsValue(file.getAbsolutePath())) {
                 Alert alert = new Alert(Alert.AlertType.WARNING);
                 alert.setTitle("Wrong program");
                 alert.setHeaderText("The program you were trying to add is already tracked");
@@ -125,7 +125,7 @@ public class TimeGuardController {
         List<File> files = fileChooser.showOpenMultipleDialog(listOfRules.getScene().getWindow());
         if (files != null) {
             for (File file : files) {
-                if(NameConverter.nameToPath.containsValue(file.getAbsolutePath())){
+                if (NameConverter.nameToPath.containsValue(file.getAbsolutePath())) {
                     Alert alert = new Alert(Alert.AlertType.WARNING);
                     alert.setTitle("Wrong file");
                     alert.setHeaderText("The file you were trying to add is already tracked");
@@ -147,7 +147,9 @@ public class TimeGuardController {
         }
 
         if (filesTab.isSelected()) {
-            fileRules.removeFileRule(NameConverter.nameToPath.get(listOfFileRules.getSelectionModel().getSelectedItem()));
+            fileRules.removeFileRule(
+                    NameConverter.nameToPath.get(listOfFileRules.getSelectionModel().getSelectedItem())
+            );
         }
     }
 
