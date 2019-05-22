@@ -5,12 +5,13 @@ import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Rule {
     private String exePath;
     private List<ActivityTime> times;
-    private RuleRestriction restriction;
+    private Optional<RuleRestriction> restriction;
 
     private WindowState prevState;
     private long prevTimeStamp;
@@ -19,6 +20,7 @@ public class Rule {
         this.exePath = path;
         this.times = new CopyOnWriteArrayList<>();
         this.prevState = WindowState.CLOSED;
+        this.restriction = Optional.empty();
     }
 
     public void handle(WindowState state) {
@@ -28,8 +30,8 @@ public class Rule {
                 createNewTime(prevState);
             }
 
-            if (restriction != null) {
-                restriction.checkRestriction();
+            if (restriction.isPresent()) {
+                restriction.get().checkRestriction();
             }
         }
 
@@ -77,14 +79,14 @@ public class Rule {
 
     public void setRestriction(RuleRestriction restriction) {
         restriction.setRule(this);
-        this.restriction = restriction;
+        this.restriction = Optional.of(restriction);
     }
 
     public void removeRestriction() {
-        this.restriction = null;
+        this.restriction = Optional.empty();
     }
 
-    public RuleRestriction getRestriction() {
+    public Optional<RuleRestriction> getRestriction() {
         return restriction;
     }
 }

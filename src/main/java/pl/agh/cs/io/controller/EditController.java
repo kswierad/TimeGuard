@@ -21,9 +21,7 @@ public class EditController {
     private ChoiceBox<ExceededUsageAction> action;
     @FXML
     private ChoiceBox<WindowState> state;
-
-
-
+    
     @FXML
     public void applyChanges(ActionEvent event) {
         Integer permittedTime = Integer.parseInt(this.permittedTime.getCharacters().toString());
@@ -38,18 +36,16 @@ public class EditController {
         }
     }
 
-
     @FXML
     public void removeRestriction(ActionEvent event) {
         rule.removeRestriction();
         close();
     }
 
-
     public void setRule(Rule rule) {
         this.rule = rule;
-        if (this.rule.getRestriction() != null) {
-            RuleRestriction restriction = rule.getRestriction();
+        if (this.rule.getRestriction().isPresent()) {
+            RuleRestriction restriction = rule.getRestriction().get();
 
             action.setValue(restriction.getAction());
             state.setValue(restriction.getState());
