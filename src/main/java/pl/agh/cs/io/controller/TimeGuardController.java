@@ -53,7 +53,10 @@ public class TimeGuardController {
             rules.accept(snapshot);
             timeCounterController.accept(snapshot.getForegroundWindowProcessIdsPerPath(), rules.getRulesCopy());
         });
-        filesListenerRunner.run(fileRules::accept);
+        filesListenerRunner.run(m -> {
+            System.out.println(m);
+            fileRules.accept(m);
+        });
         rules.rulesProperty().addListener(
                 (MapChangeListener.Change<? extends String, ? extends Rule> change) -> {
                     if (change.wasRemoved()) {
