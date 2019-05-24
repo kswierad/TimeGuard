@@ -79,6 +79,7 @@ public class OpenFilesPathProcessIdsRetriever {
             }
             String type = scanner.next();
             if (!type.equals("File")) {
+                scanner.nextLine();
                 continue;
             }
             String path = scanner.nextLine().trim();

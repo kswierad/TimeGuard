@@ -7,8 +7,6 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.Scanner;
 
 public class TimeGuard extends Application {
     private Stage primaryStage;
