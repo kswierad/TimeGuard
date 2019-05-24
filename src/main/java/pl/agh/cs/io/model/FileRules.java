@@ -17,7 +17,7 @@ public class FileRules implements Consumer<Map<String, ProcessIdsPerFilepath>> {
 
     public FileRules() {
         this.fileRules = new SimpleMapProperty<>(FXCollections.observableHashMap());
-        activeFiles = new HashMap<>();
+        activeFiles = new ConcurrentHashMap<>();
     }
 
     public MapProperty<String, FileRule> fileRulesProperty() {

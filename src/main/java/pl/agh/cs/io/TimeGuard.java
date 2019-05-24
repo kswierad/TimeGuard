@@ -7,6 +7,8 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.Scanner;
 
 public class TimeGuard extends Application {
     private Stage primaryStage;
@@ -32,7 +34,21 @@ public class TimeGuard extends Application {
     }
 
     public static void main(String[] args) {
-        launch(args);
+        String exeLocation = "exe/";
+        Runtime runtime = Runtime.getRuntime();
+        Process process = null;
+        try {
+            process = runtime.exec("PowerShell.exe " + exeLocation + "/Handle64.exe");
+            InputStream is = process.getInputStream();
+            Scanner scanner = new Scanner(is);
+            while (scanner.hasNextLine()) {
+                System.out.println(scanner.nextLine());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        //launch(args);
     }
 
 
