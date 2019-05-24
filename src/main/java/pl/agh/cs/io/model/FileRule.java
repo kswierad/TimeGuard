@@ -26,6 +26,7 @@ public class FileRule {
 
     public void activate(ProcessIdsPerFilepath fileProcesses) {
         this.fileProcesses = fileProcesses;
+        System.out.println("activating " + path);
         if (!active) {
             active = true;
             prevTimeStamp = getTimestamp();
@@ -34,6 +35,7 @@ public class FileRule {
 
     public void deactivate() {
         if (active) {
+            System.out.println("deactivating " + path);
             active = false;
             createNewTime();
         }
