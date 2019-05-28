@@ -26,7 +26,6 @@ public class FileRule {
 
     public void activate(ProcessIdsPerFilepath fileProcesses) {
         this.fileProcesses = fileProcesses;
-        System.out.println("activating " + path);
         if (!active) {
             active = true;
             prevTimeStamp = getTimestamp();
@@ -35,7 +34,6 @@ public class FileRule {
 
     public void deactivate() {
         if (active) {
-            System.out.println("deactivating " + path);
             active = false;
             createNewTime();
         }
@@ -67,34 +65,4 @@ public class FileRule {
     public void resetTimes() {
         times.clear();
     }
-
-//    public void setFileProcesses(ProcessIdsPerFilepath fileProcesses) {
-//        this.fileProcesses = fileProcesses;
-//    }
-//
-//    @Override
-//    public String toString() {
-//        double fg = 0, bg = 0;
-//        for (ActivityTime time : times) {
-//            switch (time.getState()) {
-//                case FOREGROUND:
-//                    fg += time.getAmount();
-//                    break;
-//                case BACKGROUND:
-//                    bg += time.getAmount();
-//                    break;
-//            }
-//        }
-//        switch (prevState) {
-//            case FOREGROUND:
-//                fg += (getTimestamp() - prevTimeStamp) / 1000;
-//                break;
-//            case BACKGROUND:
-//                bg += (getTimestamp() - prevTimeStamp) / 1000;
-//                break;
-//        }
-//        bg += fg;
-//        DecimalFormat df2 = new DecimalFormat("#.##");
-//        return "Rule " + exePath + "\nFOREGROUND: " + df2.format(fg) + ", BACKGROUND: " + df2.format(bg);
-//    }
 }

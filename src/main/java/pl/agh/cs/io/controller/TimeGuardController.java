@@ -140,7 +140,6 @@ public class TimeGuardController {
 
     @FXML
     private void removeRule(ActionEvent event) {
-        //listOfRules.getItems().remove(listOfRules.getSelectionModel().getSelectedItem());
         if (programsTab.isSelected()) {
             rules.removeRule(NameConverter.nameToPath.get(listOfRules.getSelectionModel().getSelectedItem()));
         }
