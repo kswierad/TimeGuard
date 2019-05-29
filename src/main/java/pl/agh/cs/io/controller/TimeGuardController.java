@@ -5,6 +5,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Tab;
@@ -19,6 +20,8 @@ import pl.agh.cs.io.model.FileRule;
 import pl.agh.cs.io.model.FileRules;
 import pl.agh.cs.io.model.Rule;
 import pl.agh.cs.io.model.Rules;
+import pl.agh.cs.io.*;
+import pl.agh.cs.io.api.windows.WindowsListenerRunner;
 
 import java.awt.Desktop;
 import java.io.IOException;
@@ -178,6 +181,16 @@ public class TimeGuardController {
 
             editWindow.setScene(scene);
             editWindow.show();
+        }
+    }
+
+    @FXML
+    private void addToAutostart(ActionEvent event) throws Exception {
+        if (((CheckMenuItem)event.getSource()).isSelected()) {
+            Autostart.writeAutostartFile();
+        }
+        else {
+            Autostart.deleteAutostartFile();
         }
     }
 
