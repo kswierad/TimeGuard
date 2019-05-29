@@ -1,5 +1,7 @@
 package pl.agh.cs.io;
 
-public enum WindowState {
+import java.io.Serializable;
+
+public enum WindowState implements Serializable {
     CLOSED, FOREGROUND, BACKGROUND
 }

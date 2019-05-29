@@ -1,5 +1,6 @@
 package pl.agh.cs.io;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.text.DecimalFormat;
 import java.time.LocalDateTime;
@@ -8,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-public class Rule {
+public class Rule implements Serializable {
     private String exePath;
     private List<ActivityTime> times;
     private Optional<RuleRestriction> restriction;

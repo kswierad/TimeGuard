@@ -1,6 +1,8 @@
 package pl.agh.cs.io;
 
-public enum ExceededUsageAction {
+import java.io.Serializable;
+
+public enum ExceededUsageAction implements Serializable {
     CLOSE,
     NOTIFY
 }

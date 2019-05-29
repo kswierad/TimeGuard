@@ -1,8 +1,9 @@
 package pl.agh.cs.io;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class ActivityTime {
+public class ActivityTime implements Serializable {
     private final WindowState state;
     private final double amount;
     private final long timestamp;
