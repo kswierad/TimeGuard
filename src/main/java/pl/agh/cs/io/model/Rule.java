@@ -5,12 +5,14 @@ import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Rule {
     private String exePath;
     private List<ActivityTime> times;
-    
+    private Optional<RuleRestriction> restriction;
+
     private WindowState prevState;
     private long prevTimeStamp;
 
@@ -18,12 +20,18 @@ public class Rule {
         this.exePath = path;
         this.times = new CopyOnWriteArrayList<>();
         this.prevState = WindowState.CLOSED;
+        this.restriction = Optional.empty();
     }
 
     public void handle(WindowState state) {
+
         if (prevState == WindowState.FOREGROUND || prevState == WindowState.BACKGROUND) {
             if (prevState != state && prevState != WindowState.CLOSED) {
                 createNewTime(prevState);
+            }
+
+            if (restriction.isPresent()) {
+                restriction.get().checkRestriction();
             }
         }
 
@@ -61,26 +69,24 @@ public class Rule {
     @Override
     public String toString() {
         double fg = 0, bg = 0;
-        for (ActivityTime time : times) {
-            switch (time.getState()) {
-                case FOREGROUND:
-                    fg += time.getAmount();
-                    break;
-                case BACKGROUND:
-                    bg += time.getAmount();
-                    break;
-            }
-        }
-        switch (prevState) {
-            case FOREGROUND:
-                fg += (getTimestamp() - prevTimeStamp) / 1000;
-                break;
-            case BACKGROUND:
-                bg += (getTimestamp() - prevTimeStamp) / 1000;
-                break;
-        }
-        bg += fg;
+
+        fg = ActivityTime.getActivityTimeFromList(this.getTimes(), WindowState.FOREGROUND);
+        bg = ActivityTime.getActivityTimeFromList(this.getTimes(), WindowState.BACKGROUND);
+
         DecimalFormat df2 = new DecimalFormat("#.##");
         return "Rule " + exePath + "\nFOREGROUND: " + df2.format(fg) + ", BACKGROUND: " + df2.format(bg);
+    }
+
+    public void setRestriction(RuleRestriction restriction) {
+        restriction.setRule(this);
+        this.restriction = Optional.of(restriction);
+    }
+
+    public void removeRestriction() {
+        this.restriction = Optional.empty();
+    }
+
+    public Optional<RuleRestriction> getRestriction() {
+        return restriction;
     }
 }
