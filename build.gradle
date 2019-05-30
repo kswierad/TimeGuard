@@ -42,7 +42,14 @@ repositories {
 dependencies {
     compile group: 'net.java.dev.jna', name: 'jna', version: '5.2.0'
     compile group: 'net.java.dev.jna', name: 'jna-platform', version: '5.2.0'
+    testCompile group: 'pl.pragmatists', name: 'JUnitParams', version: '0.3.6'
     testCompile "org.mockito:mockito-core:2.+"
+    testCompile "org.powermock:mockito-core:2.+"
+    testCompile group: 'de.saxsys', name: 'jfx-testrunner', version: '1.2'
+    /*
+    testCompile "org.powermock:powermock-core:1.7.3"
+    testCompile "org.powermock:powermock-module-junit4:1.7.3"
+    testCompile "org.powermock:powermock-api-mockito2:1.7.3" */
     testCompile 'junit:junit:4.12'
 
 }
