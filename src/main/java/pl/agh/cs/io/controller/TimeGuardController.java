@@ -6,7 +6,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Hyperlink;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Tab;
 import javafx.scene.layout.VBox;
@@ -21,7 +20,7 @@ import pl.agh.cs.io.model.FileRules;
 import pl.agh.cs.io.model.Rule;
 import pl.agh.cs.io.model.Rules;
 
-import java.awt.*;
+import java.awt.Desktop;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -157,14 +156,10 @@ public class TimeGuardController {
     }
 
     @FXML
-    private void help(ActionEvent event) {
-        try {
-            Desktop.getDesktop().browse(new URI("mailto:kam.swierad@gmail.com"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
+    private void help(ActionEvent event) throws IOException, URISyntaxException {
+        Desktop.getDesktop()
+                .browse(new URI("mailto:kam.swierad@gmail.com"));
+
     }
 
     @FXML
