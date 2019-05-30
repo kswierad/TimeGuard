@@ -7,9 +7,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import pl.agh.cs.io.ExceededUsageAction;
-import pl.agh.cs.io.Rule;
-import pl.agh.cs.io.RuleRestriction;
-import pl.agh.cs.io.WindowState;
+import pl.agh.cs.io.model.Rule;
+import pl.agh.cs.io.model.RuleRestriction;
+import pl.agh.cs.io.model.WindowState;
 
 public class EditController {
 
