@@ -1,31 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DialogPane?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.Button?>
-<VBox prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="pl.agh.cs.io.controller.TimeGuardController">
+
+<VBox prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.agh.cs.io.controller.TimeGuardController">
   <children>
     <MenuBar VBox.vgrow="NEVER">
       <menus>
         <Menu mnemonicParsing="false" text="Add...">
           <items>
-            <MenuItem mnemonicParsing="false" text="Add an Application" onAction="#addExe"/>
-            <MenuItem mnemonicParsing="false" text="Add files" onAction="#addFiles"/>
+            <MenuItem mnemonicParsing="false" onAction="#addExe" text="Add an Application" />
+            <MenuItem mnemonicParsing="false" onAction="#addFiles" text="Add files" />
           </items>
         </Menu>
         <Menu mnemonicParsing="false" text="Statistics">
           <items>
-            <MenuItem mnemonicParsing="false" text="Show statistics" onAction="#showStats" />
+            <MenuItem mnemonicParsing="false" onAction="#showStats" text="Show statistics" />
           </items>
         </Menu>
         <Menu mnemonicParsing="false" text="Help">
@@ -36,24 +40,32 @@
       </menus>
     </MenuBar>
     <HBox>
-        <VBox prefWidth="740">
-          <children>
-            <Label alignment="CENTER" layoutX="0" layoutY="0" minWidth="60.0" prefWidth="-1.0" style="&#10;" text="Active rules:" textAlignment="LEFT" wrapText="false">
-              <font>
-                <Font size="18.0" fx:id="x1" />
-              </font>
-              <textFill>
-                <Color blue="0.624" green="0.624" red="0.624" fx:id="x2" />
-              </textFill>
-            </Label>
-            <ListView fx:id="listOfRules" prefHeight="530" >
+         <TabPane prefHeight="495.0" prefWidth="739.0" tabClosingPolicy="UNAVAILABLE">
+           <tabs>
+             <Tab text="Programs" fx:id="programsTab">
+                  <content>
+                     <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                        <children>
+                        <ListView fx:id="listOfRules" prefHeight="462.0" prefWidth="739.0">
             </ListView>
-
-          </children>
-        </VBox>
+                        </children>
+                     </AnchorPane>
+                  </content>
+             </Tab>
+             <Tab text="Files" fx:id="filesTab">
+               <content>
+                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                        <children>
+                           <ListView fx:id="listOfFileRules" prefHeight="462.0" prefWidth="739.0" />
+                        </children>
+                     </AnchorPane>
+               </content>
+             </Tab>
+           </tabs>
+         </TabPane>
         <VBox prefWidth="60">
-          <Button text="delete" onAction="#removeRule"></Button>
-          <Button text=" edit " onAction="#editRule"></Button>
+          <Button onAction="#removeRule" text="delete" />
+          <Button onAction="#editRule" text=" edit " />
         </VBox>
     </HBox>
     <HBox id="HBox" alignment="CENTER_LEFT" spacing="5.0" VBox.vgrow="NEVER">
@@ -73,5 +85,6 @@
         <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
       </padding>
     </HBox>
+      <DialogPane />
   </children>
 </VBox>

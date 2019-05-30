@@ -1,4 +1,4 @@
-package pl.agh.cs.io;
+package pl.agh.cs.io.model;
 
 import java.util.List;
 
