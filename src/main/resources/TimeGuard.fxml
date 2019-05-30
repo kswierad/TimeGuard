@@ -46,7 +46,7 @@
                 <Color blue="0.624" green="0.624" red="0.624" fx:id="x2" />
               </textFill>
             </Label>
-            <ListView fx:id="listOfRules" prefHeight="530" >
+            <ListView fx:id="listViewOfRules" prefHeight="530" >
             </ListView>
 
           </children>
