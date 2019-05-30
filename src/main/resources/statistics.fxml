@@ -44,12 +44,12 @@
                   <children>
                      <TableView fx:id="fileData" prefHeight="568.0" prefWidth="792.0">
                        <columns>
-                         <TableColumn fx:id="fileName" prefWidth="630.0" text="fileName" >
+                         <TableColumn fx:id="fileName" prefWidth="630.0" text="files" >
                            <cellValueFactory>
                                <PropertyValueFactory property="fileName" />
                            </cellValueFactory>
                             </TableColumn>
-                         <TableColumn fx:id="fileTime" prefWidth="161.0" text="fileTime" >
+                         <TableColumn fx:id="fileTime" prefWidth="161.0" text="time" >
                            <cellValueFactory>
                                <PropertyValueFactory property="fileTime" />
                            </cellValueFactory>

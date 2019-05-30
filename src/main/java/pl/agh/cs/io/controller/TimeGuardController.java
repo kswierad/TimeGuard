@@ -99,7 +99,6 @@ public class TimeGuardController {
 
     @FXML
     private void addExe(ActionEvent event) {
-
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Choose a .exe file to monitor:");
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("executable", "*.exe"));
@@ -141,7 +140,6 @@ public class TimeGuardController {
 
     @FXML
     private void removeRule(ActionEvent event) {
-        //listOfRules.getItems().remove(listOfRules.getSelectionModel().getSelectedItem());
         if (programsTab.isSelected()) {
             rules.removeRule(NameConverter.nameToPath.get(listOfRules.getSelectionModel().getSelectedItem()));
         }

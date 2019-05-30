@@ -1,4 +1,6 @@
-package pl.agh.cs.io;
+package pl.agh.cs.io.model;
+
+import pl.agh.cs.io.ExceededUsageAction;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;

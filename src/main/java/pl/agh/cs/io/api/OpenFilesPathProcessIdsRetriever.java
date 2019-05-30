@@ -44,7 +44,7 @@ public class OpenFilesPathProcessIdsRetriever {
     private void execAndLoadResults() {
         try {
             Runtime runtime = Runtime.getRuntime();
-            Process process = runtime.exec("PowerShell.exe " + exeLocation + "/Handle64.exe");
+            Process process = runtime.exec("PowerShell.exe " + exeLocation + "/Handle64.exe /accepteula");
             InputStream is = process.getInputStream();
             scanner = new Scanner(is);
         } catch (IOException e) {
@@ -79,6 +79,7 @@ public class OpenFilesPathProcessIdsRetriever {
             }
             String type = scanner.next();
             if (!type.equals("File")) {
+                scanner.nextLine();
                 continue;
             }
             String path = scanner.nextLine().trim();

@@ -3,40 +3,37 @@ package pl.agh.cs.io.model;
 import javafx.beans.property.MapProperty;
 import javafx.beans.property.SimpleMapProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableMap;
 import pl.agh.cs.io.api.files.ProcessIdsPerFilepath;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 
 public class FileRules implements Consumer<Map<String, ProcessIdsPerFilepath>> {
-    private MapProperty<String, FileRule> fileRules;
+    private ObservableMap<String, FileRule> fileRules;
     private Map<String, ProcessIdsPerFilepath> activeFiles;
 
     public FileRules() {
-        this.fileRules = new SimpleMapProperty<>(FXCollections.observableHashMap());
+        fileRules = FXCollections.synchronizedObservableMap(FXCollections.observableHashMap());
         activeFiles = new HashMap<>();
     }
 
     public MapProperty<String, FileRule> fileRulesProperty() {
-        return fileRules;
+        return new SimpleMapProperty<>(fileRules);
     }
 
-
     public boolean addFileRule(FileRule fileRule) {
-        if (fileRules.containsKey(fileRule.getPath())) {
-            return false;
-        }
-        this.fileRules.put(fileRule.getPath(), fileRule);
-        return true;
+            if (fileRules.containsKey(fileRule.getPath())) {
+                return false;
+            }
+            this.fileRules.put(fileRule.getPath(), fileRule);
+            return true;
     }
 
     public void removeFileRule(String path) {
-        if (fileRules.containsKey(path)) {
-            fileRules.remove(path);
-        }
+        fileRules.remove(path);
     }
 
     public void removeFileRule(FileRule fileRule) {
@@ -45,29 +42,20 @@ public class FileRules implements Consumer<Map<String, ProcessIdsPerFilepath>> {
 
     @Override
     public void accept(Map<String, ProcessIdsPerFilepath> newActiveFiles) {
-        for (FileRule fileRule: fileRules.values()) {
-            if (newActiveFiles.containsKey(fileRule.getPath())) {
-                fileRule.activate(newActiveFiles.get(fileRule.getPath()));
+        fileRules.forEach((rulePath, rule) -> {
+            if (newActiveFiles.containsKey(rulePath)) {
+                rule.activate(newActiveFiles.get(rulePath));
             }
-            Set<String>  deactivationSet = activeFiles.keySet();
+            Set<String> deactivationSet = activeFiles.keySet();
             deactivationSet.removeAll(newActiveFiles.keySet());
-            for (String filePath: deactivationSet) {
-                fileRules.get(filePath).deactivate();
-            }
-            activeFiles = newActiveFiles;
-        }
+            deactivationSet.retainAll(fileRules.keySet());
+            deactivationSet.forEach(path -> fileRules.get(path).deactivate());
+        });
+        activeFiles = newActiveFiles;
     }
 
-    public HashMap<String, FileRule> getFileRulesCopy() {
-        HashMap<String, FileRule> copy = new HashMap<>();
-        for (FileRule fileRule : fileRules.values()) {
-            copy.put(fileRule.getPath(), fileRule);
-        }
-        return copy;
-    }
-
-    public ConcurrentHashMap<String, FileRule> getFileRules() {
-        return new ConcurrentHashMap<>(fileRules);
+    public Map<String, FileRule> getFileRules() {
+        return fileRules;
     }
 
     @Override
