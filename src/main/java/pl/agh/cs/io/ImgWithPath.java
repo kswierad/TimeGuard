@@ -1,16 +1,16 @@
 package pl.agh.cs.io;
 
 import javafx.scene.image.Image;
-import javafx.scene.image.WritableImage;
 
 public class ImgWithPath {
 
     private String path;
     private Image img;
-    public ImgWithPath(String path){
-        this.path=path;
+
+    public ImgWithPath(String path) {
+        this.path = path;
         IconImageRetriever iconImageRetriever = new IconImageRetriever(path);
-        this.img=iconImageRetriever.getIconImage();
+        this.img = iconImageRetriever.getIconImage();
     }
 
 

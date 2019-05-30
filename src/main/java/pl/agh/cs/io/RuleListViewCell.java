@@ -17,10 +17,10 @@ public class RuleListViewCell extends ListCell<ImgWithPath> {
     Label exeName;
 
     @FXML
-     ImageView imageView;
+    ImageView imageView;
 
     @FXML
-     GridPane gridPane;
+    GridPane gridPane;
 
     private FXMLLoader mLLoader;
 
@@ -28,7 +28,7 @@ public class RuleListViewCell extends ListCell<ImgWithPath> {
     protected void updateItem(ImgWithPath imgWithPath, boolean empty) {
         super.updateItem(imgWithPath, empty);
 
-        if(empty || imgWithPath == null) {
+        if (empty || imgWithPath == null) {
 
             setText(null);
             setGraphic(null);
@@ -36,14 +36,12 @@ public class RuleListViewCell extends ListCell<ImgWithPath> {
         } else {
             if (mLLoader == null) {
                 mLLoader = new FXMLLoader(getClass().getResource("/listViewCell.fxml"));
-                //mLLoader = new FXMLLoader();
-                //mLLoader.setLocation(getClass().getResource("/listViewCell.fxml"));
                 mLLoader.setController(this);
 
                 try {
                     mLLoader.load();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    //do nothing :v
                 }
 
             }

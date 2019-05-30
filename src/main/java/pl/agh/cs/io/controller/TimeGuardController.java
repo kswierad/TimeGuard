@@ -11,7 +11,12 @@ import javafx.scene.control.ListView;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import pl.agh.cs.io.*;
+import pl.agh.cs.io.ImgWithPath;
+import pl.agh.cs.io.Rule;
+import pl.agh.cs.io.Rules;
+import pl.agh.cs.io.RuleListViewCell;
+import pl.agh.cs.io.TimeGuard;
+import pl.agh.cs.io.TimeCounterController;
 import pl.agh.cs.io.api.windows.WindowsListenerRunner;
 
 import java.util.concurrent.ScheduledExecutorService;
@@ -45,17 +50,14 @@ public class TimeGuardController {
         rules.rulesProperty().addListener(
                 (MapChangeListener.Change<? extends String, ? extends Rule> change) -> {
                     if (change.wasRemoved()) {
-                        //listOfRules.getItems().remove(NameConverter.nameFromPath(change.getKey()));
-                        //NameConverter.nameToPath.remove(NameConverter.nameFromPath(change.getKey()));
-                        rulesWithIconObservableList.remove(NameConverter.nameToImgWithPath.get(NameConverter.nameFromPath(change.getKey())));
+                        rulesWithIconObservableList.remove(NameConverter.nameToImgWithPath.get(
+                                NameConverter.nameFromPath(change.getKey())
+                        ));
                         NameConverter.nameToImgWithPath.remove(NameConverter.nameFromPath(change.getKey()));
 
                     }
                     if (change.wasAdded()) {
-                        //listOfRules.getItems().add(NameConverter.nameFromPath(change.getKey()));
-                        //NameConverter.nameToPath.put(NameConverter.nameFromPath(change.getKey()), change.getKey());
                         ImgWithPath newRule = new ImgWithPath(change.getKey());
-                        //listViewOfRules.getItems().add(newRule);
                         rulesWithIconObservableList.add(newRule);
                         NameConverter.nameToImgWithPath.put(NameConverter.nameFromPath(change.getKey()), newRule);
 
