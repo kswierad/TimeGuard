@@ -11,13 +11,27 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 
+import static java.lang.Thread.sleep;
+
 public class Rules implements Consumer<OpenWindowsProcessesPerExeSnapshot>, Serializable {
     private MapProperty<String, Rule> rules;
     private int rulesModificationCounter = 0;
     private int numberOfModsBetweenBackups = 100;
+    private int timeIntervalInSecondsBetweenBackups = 120;
 
     public Rules() {
-        this.rules = SerializationManager.deserialize();/*new SimpleMapProperty<>(FXCollections.observableHashMap())*/;
+        this.rules = SerializationManager.deserialize();/*new SimpleMapProperty<>(FXCollections.observableHashMap());*/
+        new Thread(() ->
+        {
+            try {
+                while(true){
+                    sleep(timeIntervalInSecondsBetweenBackups);
+                    SerializationManager.serialize(rules);
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }).start();
     }
 
     public MapProperty<String, Rule> rulesProperty() {
