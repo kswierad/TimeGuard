@@ -1,15 +1,17 @@
-package pl.agh.cs.io;
+package pl.agh.cs.io.model;
 
 import javafx.beans.property.MapProperty;
 import javafx.beans.property.SimpleMapProperty;
 import javafx.collections.FXCollections;
+import pl.agh.cs.io.api.ProcessIdsPerPath;
+import pl.agh.cs.io.api.windows.OpenWindowsProcessesPerExeSnapshot;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 
-public class Rules implements Consumer<OpenWindowsSnapshot> {
+public class Rules implements Consumer<OpenWindowsProcessesPerExeSnapshot> {
     private MapProperty<String, Rule> rules;
 
     public Rules() {
@@ -40,17 +42,18 @@ public class Rules implements Consumer<OpenWindowsSnapshot> {
     }
 
     @Override
-    public void accept(OpenWindowsSnapshot openWindowsSnapshot) {
+    public void accept(OpenWindowsProcessesPerExeSnapshot openWindowsProcessesPerExeSnapshot) {
         HashMap<String, Rule> unchecked = getRulesCopy();
 
-        ProcessesPerExe foreground = openWindowsSnapshot.getForegroundWindow();
-        Map<String, ProcessesPerExe> allWindows = openWindowsSnapshot.getAllWindows();
+        ProcessIdsPerPath foreground = openWindowsProcessesPerExeSnapshot.getForegroundWindowProcessIdsPerPath();
+        Map<String, ProcessIdsPerPath> allWindows =
+                openWindowsProcessesPerExeSnapshot.getBackgroundWindowsProcessesPerExe();
 
         // handle foreground window
-        if (unchecked.containsKey(foreground.getExePath())) {
-            rules.get(foreground.getExePath()).handle(WindowState.FOREGROUND);
-            unchecked.remove(foreground.getExePath());
-            allWindows.remove(foreground.getExePath());
+        if (unchecked.containsKey(foreground.getPath())) {
+            rules.get(foreground.getPath()).handle(WindowState.FOREGROUND);
+            unchecked.remove(foreground.getPath());
+            allWindows.remove(foreground.getPath());
         }
 
         // handle rest of windows
