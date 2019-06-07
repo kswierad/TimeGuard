@@ -1,58 +1,52 @@
 package pl.agh.cs.io.counter;
 
-import javafx.event.EventHandler;
-import javafx.scene.Group;
-import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.StackPane;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
+import javax.swing.JLabel;
+import javax.swing.JWindow;
+import java.awt.Font;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class TimeCounter {
 
     private double xOffset = 0, yOffset = 0;
-
-    private Label timeLabel = new Label("0:00");
-    private StackPane stackPane = new StackPane();
-    private Group root = new Group();
-    private Stage stage = new Stage();
+    private JLabel label;
+    JWindow jWindow;
 
 
     public void start() {
-
-        root.getChildren().addAll(timeLabel);
-        root.setOnMousePressed(new EventHandler<MouseEvent>() {
+        label = new JLabel();
+        label.setFont(new Font(label.getName(), Font.PLAIN, 20));
+        jWindow = new JWindow();
+        jWindow.add(label);
+        jWindow.setVisible(true);
+        jWindow.addMouseListener(new MouseAdapter() {
             @Override
-            public void handle(MouseEvent event) {
-                xOffset = event.getSceneX();
-                yOffset = event.getSceneY();
-            }
-        });
-        root.setOnMouseDragged(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                stage.setX(event.getScreenX() - xOffset);
-                stage.setY(event.getScreenY() - yOffset);
+            public void mouseClicked(java.awt.event.MouseEvent e) {
+                xOffset = e.getX();
+                yOffset = e.getY();
             }
         });
 
-        Scene scene = new Scene(root);
-        stage.initStyle(StageStyle.UNDECORATED);
-        stage.setAlwaysOnTop(true);
-        stage.setScene(scene);
-        stage.show();
+        jWindow.addMouseMotionListener(new MouseAdapter() {
+            @Override
+            public void mouseDragged(MouseEvent e) {
+                jWindow.setLocation(e.getXOnScreen() - (int) xOffset, e.getYOnScreen() - (int) yOffset);
+            }
+        });
+    }
+
+    public void setAlwaysOnTop() {
+        jWindow.setAlwaysOnTop(true);
     }
 
     public void setText(String text) {
-        timeLabel.setText(text);
+        text = String.format("<html>%s</html>", text.replace("\n", "<br>"));
+        label.setText(text);
+        jWindow.pack();
     }
 
-    public void setWidthAndHeight() {
-        root.applyCss();
-        root.layout();
-        stage.setWidth(timeLabel.getWidth());
-        stage.setHeight(timeLabel.getHeight());
+    public void setWindowPosition(int x, int y) {
+        jWindow.setLocation(x, y - 50);
     }
 
 }

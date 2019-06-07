@@ -19,9 +19,16 @@ public class TimeCounterController {
         if (rulesCopy.containsKey(foregroundWindow.getPath())) {
             Platform.runLater(() -> {
                 timeCounter.setText(rulesCopy.get(foregroundWindow.getPath()).toString());
-                timeCounter.setWidthAndHeight();
             });
         }
+    }
+
+    public void setAlwaysOnTop() {
+        timeCounter.setAlwaysOnTop();
+    }
+
+    public void setWindowPosition(int x, int y) {
+        timeCounter.setWindowPosition(x, y);
     }
 
 }
