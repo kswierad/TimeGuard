@@ -25,14 +25,16 @@ public class Rule {
 
     public void handle(WindowState state) {
 
+        if (state == WindowState.CLOSED){
+            restriction.ifPresent(RuleRestriction::clearExtraTime);
+        }
+
         if (prevState == WindowState.FOREGROUND || prevState == WindowState.BACKGROUND) {
-            if (prevState != state && prevState != WindowState.CLOSED) {
+            if (prevState != state && state != WindowState.CLOSED) {
                 createNewTime(prevState);
             }
 
-            if (restriction.isPresent()) {
-                restriction.get().checkRestriction();
-            }
+            restriction.ifPresent(RuleRestriction::checkRestriction);
         }
 
         if (state != prevState) {
@@ -79,6 +81,7 @@ public class Rule {
 
     public void setRestriction(RuleRestriction restriction) {
         restriction.setRule(this);
+        restriction.checkRestriction();
         this.restriction = Optional.of(restriction);
     }
 
