@@ -3,9 +3,11 @@ package pl.agh.cs.io.counter;
 import javax.swing.JLabel;
 import javax.swing.JWindow;
 import javax.swing.border.EmptyBorder;
-import java.awt.*;
+
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.Font;
+import java.awt.Color;
 
 public class TimeCounter {
 
@@ -20,7 +22,7 @@ public class TimeCounter {
         label.setBackground(Color.cyan);
         label.setForeground(Color.darkGray);
         label.setOpaque(true);
-        label.setBorder(new EmptyBorder(15,15,15,15));//top,left,bottom,right
+        label.setBorder(new EmptyBorder(15, 15, 15, 15)); //top,left,bottom,right
         jWindow = new JWindow();
         jWindow.add(label);
         jWindow.setVisible(true);

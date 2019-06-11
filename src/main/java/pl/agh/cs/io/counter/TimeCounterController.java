@@ -9,6 +9,7 @@ import pl.agh.cs.io.api.ProcessIdsPerPath;
 import pl.agh.cs.io.model.WindowState;
 
 import java.util.HashMap;
+import java.util.List;
 
 public class TimeCounterController {
 
@@ -22,8 +23,8 @@ public class TimeCounterController {
     public void accept(ProcessIdsPerPath foregroundWindow, HashMap<String, Rule> rulesCopy) {
         if (rulesCopy.containsKey(foregroundWindow.getPath())) {
             Platform.runLater(() -> {
-                //timeCounter.setText(rulesCopy.get(foregroundWindow.getPath()).toString());
-                double foregroundSeconds = ActivityTime.getActivityTimeFromList(rulesCopy.get(foregroundWindow.getPath()).getTimes(), WindowState.FOREGROUND);
+                List<ActivityTime> atList = rulesCopy.get(foregroundWindow.getPath()).getTimes();
+                double foregroundSeconds = ActivityTime.getActivityTimeFromList(atList, WindowState.FOREGROUND);
                 String fgString = new SimpleStringProperty(StatsController.secondsToString(foregroundSeconds)).get();
                 timeCounter.setText(fgString);
             });
