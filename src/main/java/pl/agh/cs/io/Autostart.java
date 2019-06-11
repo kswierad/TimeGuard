@@ -8,7 +8,7 @@ import java.net.URISyntaxException;
 
 public class Autostart {
     private static final String windowsStartupDirectory = System.getenv("APPDATA") +
-            "\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Startup\\";
+            "\\Microsoft\\Windows\\Start Menu\\Programs\\Startup\\";
 
     public static String getPath(){
         try {
