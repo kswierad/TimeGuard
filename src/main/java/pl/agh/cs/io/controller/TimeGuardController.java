@@ -164,21 +164,39 @@ public class TimeGuardController {
 
     @FXML
     private void editRule(ActionEvent event) throws Exception {
-        String path = NameConverter.nameToPath.get(listOfRules.getSelectionModel().getSelectedItem());
-        Rule toEdit = rules.rulesProperty().get(path);
-        if (toEdit != null) {
-            Stage editWindow = new Stage();
-            editWindow.setTitle("Rule");
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(TimeGuard.class.getResource("/editRestriction.fxml"));
+        if (programsTab.isSelected()) {
+            String path = NameConverter.nameToPath.get(listOfRules.getSelectionModel().getSelectedItem());
+            Rule toEdit = rules.rulesProperty().get(path);
+            if (toEdit != null) {
+                Stage editWindow = new Stage();
+                editWindow.setTitle("Rule");
+                FXMLLoader loader = new FXMLLoader();
+                loader.setLocation(TimeGuard.class.getResource("/editProgramRestriction.fxml"));
 
-            VBox rootLayout = loader.load();
-            ((EditController) loader.getController()).setRule(toEdit);
-            Scene scene = new Scene(rootLayout, 450, 250);
+                VBox rootLayout = loader.load();
+                ((EditProgramController) loader.getController()).setRule(toEdit);
+                Scene scene = new Scene(rootLayout);
 
-            editWindow.setScene(scene);
-            editWindow.show();
+                editWindow.setScene(scene);
+                editWindow.show();
+            }
+        } else if (filesTab.isSelected()) {
+            String path = NameConverter.nameToPath.get(listOfFileRules.getSelectionModel().getSelectedItem());
+            FileRule toEdit = fileRules.fileRulesProperty().get(path);
+            if (toEdit != null) {
+                Stage editWindow = new Stage();
+                editWindow.setTitle("Rule");
+                FXMLLoader loader = new FXMLLoader();
+                loader.setLocation(TimeGuard.class.getResource("/editFileRestriction.fxml"));
+
+                VBox rootLayout = loader.load();
+                ((EditFileController) loader.getController()).setRule(toEdit);
+                Scene scene = new Scene(rootLayout);
+
+                editWindow.setScene(scene);
+                editWindow.show();
+            }
         }
-    }
 
+    }
 }

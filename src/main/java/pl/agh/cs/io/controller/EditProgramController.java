@@ -12,7 +12,7 @@ import pl.agh.cs.io.model.Rule;
 import pl.agh.cs.io.model.RuleRestriction;
 import pl.agh.cs.io.model.WindowState;
 
-public class EditController {
+public class EditProgramController {
 
 
     private Rule rule;
@@ -31,7 +31,7 @@ public class EditController {
     public void okAction(ActionEvent event) {
         if (enable.isSelected()) {
             try {
-                Long permittedTime = timeToLong();
+                Long permittedTime = timeToLong(this.permittedTime.getCharacters().toString());
                 ExceededUsageAction action = this.action.getSelectionModel().getSelectedItem();
                 WindowState state = this.state.getSelectionModel().getSelectedItem();
 
@@ -100,7 +100,7 @@ public class EditController {
         }
     }
 
-    private String longToString(Long secondsOrigin) {
+    public static String longToString(Long secondsOrigin) {
         Long seconds = secondsOrigin % 60;
         secondsOrigin = secondsOrigin / 60;
         Long minutes = secondsOrigin % 60;
@@ -114,12 +114,11 @@ public class EditController {
         }
     }
 
-    private Long timeToLong() throws NumberFormatException {
+    public static Long timeToLong(String input) throws NumberFormatException {
         Long hours;
         Long minutes;
         Long seconds;
 
-        String input = permittedTime.getCharacters().toString();
         String[] parts = input.split(":");
 
         if (parts.length < 2 || parts.length > 3) {
