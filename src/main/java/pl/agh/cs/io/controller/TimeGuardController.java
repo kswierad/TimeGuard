@@ -12,6 +12,7 @@ import javafx.scene.control.Tab;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import pl.agh.cs.io.Autostart;
 import pl.agh.cs.io.TimeGuard;
 import pl.agh.cs.io.api.files.FilesListenerRunner;
 import pl.agh.cs.io.api.windows.WindowsListenerRunner;
@@ -20,8 +21,6 @@ import pl.agh.cs.io.model.FileRule;
 import pl.agh.cs.io.model.FileRules;
 import pl.agh.cs.io.model.Rule;
 import pl.agh.cs.io.model.Rules;
-import pl.agh.cs.io.*;
-import pl.agh.cs.io.api.windows.WindowsListenerRunner;
 
 import java.awt.Desktop;
 import java.io.IOException;
@@ -186,10 +185,9 @@ public class TimeGuardController {
 
     @FXML
     private void addToAutostart(ActionEvent event) throws Exception {
-        if (((CheckMenuItem)event.getSource()).isSelected()) {
+        if (((CheckMenuItem) event.getSource()).isSelected()) {
             Autostart.writeAutostartFile();
-        }
-        else {
+        } else {
             Autostart.deleteAutostartFile();
         }
     }
