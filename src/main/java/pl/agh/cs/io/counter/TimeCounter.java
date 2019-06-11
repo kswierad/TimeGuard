@@ -21,7 +21,7 @@ public class TimeCounter {
         jWindow.setVisible(true);
         jWindow.addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseClicked(java.awt.event.MouseEvent e) {
+            public void mousePressed(java.awt.event.MouseEvent e) {
                 xOffset = e.getX();
                 yOffset = e.getY();
             }
