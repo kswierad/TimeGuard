@@ -3,6 +3,7 @@ package pl.agh.cs.io.model;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextInputDialog;
+import javafx.stage.Stage;
 import pl.agh.cs.io.ExceededUsageAction;
 import pl.agh.cs.io.Utils;
 
@@ -81,21 +82,23 @@ public class RuleRestriction {
                 ButtonType.OK
         );
         alert.setHeaderText(null);
+        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+        stage.setAlwaysOnTop(true);
         alert.showAndWait();
 
         if (alert.getResult() == ButtonType.OK) {
-            // kill app
+            // fixme kill app
         }
         else {
             TextInputDialog dialog = new TextInputDialog("01:00");
+            dialog.getDialogPane().getButtonTypes().setAll(ButtonType.OK);
             dialog.setTitle("Rule time extension");
             dialog.setHeaderText(null);
             dialog.setContentText("Extra time (hh:mm)");
+            stage = (Stage) dialog.getDialogPane().getScene().getWindow();
+            stage.setAlwaysOnTop(true);
             Optional<String> result = dialog.showAndWait();
-            result.ifPresent(time -> {
-                extraTime += Utils.timeToLong(time);
-                System.out.println(String.format("Added extra time: %s", extraTime));
-            });
+            result.ifPresent(time -> extraTime += Utils.timeToLong(time));
         }
     }
 

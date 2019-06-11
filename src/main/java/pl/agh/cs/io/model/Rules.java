@@ -37,7 +37,6 @@ public class Rules implements Consumer<OpenWindowsProcessesPerExeSnapshot> {
             rule.handle(WindowState.FOREGROUND);
         }
         this.rules.put(rule.getExePath(), rule);
-        System.out.println(rules);
         return true;
     }
 
