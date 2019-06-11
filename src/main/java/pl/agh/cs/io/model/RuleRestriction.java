@@ -74,7 +74,7 @@ public class RuleRestriction {
         this.rule = rule;
     }
 
-    private void handleClose(){
+    private void handleClose() {
         ButtonType buttonExtend = new ButtonType("Please, more time...");
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION,
                 "Your time for this application has exceeded",
@@ -88,8 +88,7 @@ public class RuleRestriction {
 
         if (alert.getResult() == ButtonType.OK) {
             // fixme kill app
-        }
-        else {
+        } else {
             TextInputDialog dialog = new TextInputDialog("01:00");
             dialog.getDialogPane().getButtonTypes().setAll(ButtonType.OK);
             dialog.setTitle("Rule time extension");

@@ -27,15 +27,12 @@ public class Rules implements Consumer<OpenWindowsProcessesPerExeSnapshot> {
         if (rules.containsKey(rule.getExePath())) {
             return false;
         }
-        if (rule.getExePath().contains("dupa")){
-            rule.handle(WindowState.FOREGROUND);
-            try {
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            rule.handle(WindowState.FOREGROUND);
-        }
+//  fixme remove
+//        if (rule.getExePath().contains("dupa")) {
+//            rule.handle(WindowState.FOREGROUND);
+//            Thread.sleep(2000);
+//            rule.handle(WindowState.FOREGROUND);
+//        }
         this.rules.put(rule.getExePath(), rule);
         return true;
     }

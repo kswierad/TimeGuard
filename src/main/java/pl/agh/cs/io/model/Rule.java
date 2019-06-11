@@ -25,7 +25,7 @@ public class Rule {
 
     public void handle(WindowState state) {
 
-        if (state == WindowState.CLOSED){
+        if (state == WindowState.CLOSED) {
             restriction.ifPresent(RuleRestriction::clearExtraTime);
         }
 
