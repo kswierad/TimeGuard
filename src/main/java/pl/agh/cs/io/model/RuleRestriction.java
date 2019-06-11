@@ -88,6 +88,8 @@ public class RuleRestriction {
 
         if (alert.getResult() == ButtonType.OK) {
             // fixme kill app
+            // try sth like Runtime.getRuntime().exec("taskkill /F /T /IM "+appName.exe)
+            // you can retrieve appName.exe from rule.getPath() I believe
         } else {
             TextInputDialog dialog = new TextInputDialog("01:00");
             dialog.getDialogPane().getButtonTypes().setAll(ButtonType.OK);
