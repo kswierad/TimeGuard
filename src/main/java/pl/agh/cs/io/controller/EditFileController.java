@@ -50,6 +50,12 @@ public class EditFileController {
     }
 
     @FXML
+    public void resetTimeInRestriction(ActionEvent event) {
+        rule.resetTimes();
+        close();
+    }
+
+    @FXML
     public void cancelAction(ActionEvent event) {
         close();
     }
