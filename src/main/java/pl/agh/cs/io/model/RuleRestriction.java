@@ -5,10 +5,11 @@ import pl.agh.cs.io.ExceededUsageAction;
 import pl.agh.cs.io.api.ProcessIdsPerPath;
 import pl.agh.cs.io.controller.NameConverter;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
-public class RuleRestriction {
+public class RuleRestriction implements Serializable {
 
     public final WindowState state;
     public final long permittedNumSec;
