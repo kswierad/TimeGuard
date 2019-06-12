@@ -185,8 +185,7 @@ public class TimeGuardController {
     @FXML
     private void editRule(ActionEvent event) throws Exception {
         if (programsTab.isSelected()) {
-            String path = NameConverter.nameToImgWithPath.get(
-                listViewOfRules.getSelectionModel().getSelectedItem()).getPath();
+            String path = listViewOfRules.getSelectionModel().getSelectedItem().getPath();
             Rule toEdit = rules.rulesProperty().get(path);
             if (toEdit != null) {
                 Stage editWindow = new Stage();
