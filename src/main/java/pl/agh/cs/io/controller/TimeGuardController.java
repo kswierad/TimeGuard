@@ -13,6 +13,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.Tab;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import pl.agh.cs.io.Autostart;
 import pl.agh.cs.io.TimeGuard;
@@ -67,7 +68,7 @@ public class TimeGuardController {
 
         rulesWithIconObservableList = FXCollections.observableArrayList();
         listViewOfRules.setItems(rulesWithIconObservableList);
-        listViewOfRules.setCellFactory(rulesListView -> new RuleListViewCell());
+        listViewOfRules.setCellFactory(rulesListView -> new RuleListViewCell(rules));
         filesListenerRunner.run(fileRules::accept);
         rules.rulesProperty().addListener(
                 (MapChangeListener.Change<? extends String, ? extends Rule> change) -> {
@@ -210,7 +211,11 @@ public class TimeGuardController {
                 Scene scene = new Scene(rootLayout);
 
                 editWindow.setScene(scene);
-                editWindow.show();
+                editWindow.initModality(Modality.WINDOW_MODAL);
+                editWindow.initOwner(TimeGuard.primaryStage);
+                editWindow.showAndWait();
+                listViewOfRules.setItems(FXCollections.observableArrayList());
+                listViewOfRules.setItems(rulesWithIconObservableList);
             }
         } else if (filesTab.isSelected()) {
             String path = NameConverter.nameToPath.get(listOfFileRules.getSelectionModel().getSelectedItem());
@@ -226,6 +231,8 @@ public class TimeGuardController {
                 Scene scene = new Scene(rootLayout);
 
                 editWindow.setScene(scene);
+                editWindow.initModality(Modality.WINDOW_MODAL);
+                editWindow.initOwner(TimeGuard.primaryStage);
                 editWindow.show();
             }
         }
