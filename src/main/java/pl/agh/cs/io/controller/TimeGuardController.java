@@ -86,6 +86,10 @@ public class TimeGuardController {
         );
     }
 
+    public TimeCounterController getTimeCounterController() {
+        return timeCounterController;
+    }
+
     @FXML
     private void showStats(ActionEvent event) throws Exception {
         Stage statsWindow = new Stage();
