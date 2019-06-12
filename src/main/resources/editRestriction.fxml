@@ -26,6 +26,7 @@
                         </FXCollections>
                     </items>
                 </ChoiceBox>
+                <Button fx:id="reset" layoutX="69.0" layoutY="180.0" mnemonicParsing="false" onAction="#resetTimeInRestriction" text="Reset times" />
                 <Button fx:id="remove" layoutX="69.0" layoutY="141.0" mnemonicParsing="false" onAction="#removeRestriction" text="Remove restriction" />
             <Text layoutX="52.0" layoutY="109.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Type of restricted activity" />
             <ChoiceBox fx:id="state" layoutX="235.0" layoutY="91.0" prefWidth="150.0">
