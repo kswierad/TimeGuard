@@ -1,22 +1,16 @@
-package pl.agh.cs.io;
+package pl.agh.cs.io.model;
 
-public class ActivityTime {
-    private final WindowState state;
+public class FileActivityTime {
     private final double amount;
     private final long timestamp;
 
-    public ActivityTime(WindowState state, double amount, long timestamp) {
-        this.state = state;
+    public FileActivityTime(double amount, long timestamp) {
         this.amount = amount;
         this.timestamp = timestamp;
     }
 
     public double getAmount() {
         return amount;
-    }
-
-    public WindowState getState() {
-        return state;
     }
 
     public long getTimestamp() {
