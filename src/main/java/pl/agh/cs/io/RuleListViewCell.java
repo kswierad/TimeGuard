@@ -57,7 +57,7 @@ public class RuleListViewCell extends ListCell<ImgWithPath> {
 
             exeName.setText(NameConverter.nameFromPath(imgWithPath.getPath()));
             imageView.setImage(imgWithPath.getImg());
-            if (rules.getRules().get(imgWithPath.getPath()).getRestriction().isPresent()) {
+            if (rules.getRules().get(imgWithPath.getPath()).getRestriction() != null) {
                 imageR.setVisible(true);
             } else {
                 imageR.setVisible(false);
