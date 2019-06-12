@@ -1,5 +1,6 @@
 language: java
 jdk:
   - oraclejdk8
+dist: trusty
 notifications:
   slack: io-2019:ApKXkWbX8xOsgkcByeyGAhQK
