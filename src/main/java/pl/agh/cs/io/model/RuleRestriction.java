@@ -32,7 +32,6 @@ public class RuleRestriction {
             double usedToday = ActivityTime.getActivityTimeFromList(rule.getTimes(), rule.getRestriction().get().state);
 
             if (usedToday > rule.getRestriction().get().permittedNumSec) {
-                ;
                 long currentTime = Timestamp.valueOf(LocalDateTime.now()).getTime();
                 //notify or call method every numOfSecBetweenNotifications seconds after time is exceeded
                 if (!isDisplayed &&

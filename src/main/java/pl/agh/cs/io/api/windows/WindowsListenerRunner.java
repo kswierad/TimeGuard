@@ -39,7 +39,8 @@ public class WindowsListenerRunner {
                                 PathProcessId foregroundWindow = WindowsApi.getForegroundWindowPathProcessId();
                                 List<PathProcessId> windows = WindowsApi.getOpenWindowsPathProcessIds();
                                 Map<String, ProcessIdsPerPath> exeWindows = toWindowsPerExeMap(windows);
-                                ProcessIdsPerPath foregroundWindowPerExe = exeWindows.remove(foregroundWindow.getPath());
+                                ProcessIdsPerPath foregroundWindowPerExe = exeWindows
+                                        .remove(foregroundWindow.getPath());
                                 if (foregroundWindowPerExe == null) {
                                     foregroundWindowPerExe = ProcessIdsPerPath.fromWindow(foregroundWindow);
                                 }
