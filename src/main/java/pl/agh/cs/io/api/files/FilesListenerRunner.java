@@ -30,12 +30,13 @@ public class FilesListenerRunner {
 
     private Runnable newGetOpenFilesProcessesTask(Consumer<Map<String, ProcessIdsPerFilepath>> callback) {
         return () -> {
-            OpenFilesPathProcessIdsRetriever openFilesPathProcessIdsRetriever = new OpenFilesPathProcessIdsRetriever();
-            List<PathProcessId> pathProcessIds = openFilesPathProcessIdsRetriever.getPathProcessIds();
-            Map<String, Set<Integer>> groupedProcessIds = PathProcessId.groupByPath(pathProcessIds);
-            Map<String, ProcessIdsPerFilepath> processIdsPerFilepath = new HashMap<>();
-            groupedProcessIds.forEach((k, v) -> processIdsPerFilepath.put(k, new ProcessIdsPerFilepath(k, v)));
-            callback.accept(processIdsPerFilepath);
+                OpenFilesPathProcessIdsRetriever openFilesPathProcessIdsRetriever =
+                        new OpenFilesPathProcessIdsRetriever();
+                List<PathProcessId> pathProcessIds = openFilesPathProcessIdsRetriever.getPathProcessIds();
+                Map<String, Set<Integer>> groupedProcessIds = PathProcessId.groupByPath(pathProcessIds);
+                Map<String, ProcessIdsPerFilepath> processIdsPerFilepath = new HashMap<>();
+                groupedProcessIds.forEach((k, v) -> processIdsPerFilepath.put(k, new ProcessIdsPerFilepath(k, v)));
+                callback.accept(processIdsPerFilepath);
         };
     }
 }

@@ -78,9 +78,9 @@ public class EditProgramController {
 
     public void setRule(Rule rule) {
         this.rule = rule;
-        if (this.rule.getRestriction().isPresent()) {
+        if (this.rule.getRestriction() != null) {
             enable.setSelected(true);
-            RuleRestriction restriction = rule.getRestriction().get();
+            RuleRestriction restriction = rule.getRestriction();
 
             action.setValue(restriction.getAction());
             state.setValue(restriction.getState());

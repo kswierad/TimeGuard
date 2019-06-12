@@ -2,18 +2,18 @@ package pl.agh.cs.io.model;
 
 import pl.agh.cs.io.api.ProcessIdsPerPath;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-public class Rule {
+public class Rule implements Serializable {
     private String exePath;
     private List<ActivityTime> times;
-    private Optional<RuleRestriction> restriction;
+    private RuleRestriction restriction;
 
     private WindowState prevState;
     private long prevTimeStamp;
@@ -22,21 +22,19 @@ public class Rule {
         this.exePath = path;
         this.times = new CopyOnWriteArrayList<>();
         this.prevState = WindowState.CLOSED;
-        this.restriction = Optional.empty();
     }
 
     public void handle(WindowState state, ProcessIdsPerPath processes) {
 
-        if (state == WindowState.CLOSED) {
-            restriction.ifPresent(RuleRestriction::clearExtraTime);
-        }
 
         if (prevState == WindowState.FOREGROUND || prevState == WindowState.BACKGROUND) {
             if (prevState != state && state != WindowState.CLOSED) {
                 createNewTime(prevState);
             }
 
-            restriction.ifPresent(ruleRestriction -> ruleRestriction.checkRestriction(processes));
+            if (restriction != null) {
+                restriction.checkRestriction(processes);
+            }
         }
 
         if (state != prevState) {
@@ -83,14 +81,14 @@ public class Rule {
 
     public void setRestriction(RuleRestriction restriction) {
         restriction.setRule(this);
-        this.restriction = Optional.of(restriction);
+        this.restriction = restriction;
     }
 
     public void removeRestriction() {
-        this.restriction = Optional.empty();
+        this.restriction = null;
     }
 
-    public Optional<RuleRestriction> getRestriction() {
+    public RuleRestriction getRestriction() {
         return restriction;
     }
 }

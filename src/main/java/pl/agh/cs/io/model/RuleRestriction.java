@@ -42,7 +42,6 @@ public class RuleRestriction {
                 //notify or call method every numOfSecBetweenNotifications seconds after time is exceeded
                 if (currentTime > lastNotification + (1000 * numOfSecBetweenNotifications)) {
                     lastNotification = currentTime;
-                    //TODO Notify user
                     if (action == ExceededUsageAction.CLOSE) {
                         handleClose(processes);
                     }
