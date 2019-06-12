@@ -1,11 +1,7 @@
 package pl.agh.cs.io.model;
 
 import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.TextInputDialog;
-import javafx.stage.Stage;
 import pl.agh.cs.io.ExceededUsageAction;
-import pl.agh.cs.io.Utils;
 import pl.agh.cs.io.api.ProcessIdsPerPath;
 import pl.agh.cs.io.controller.NameConverter;
 
@@ -44,9 +40,8 @@ public class RuleRestriction {
                     lastNotification = currentTime;
                     if (action == ExceededUsageAction.CLOSE) {
                         handleClose(processes);
-                    }
-                    else {
-                        if(!isDisplayed) {
+                    } else {
+                        if (!isDisplayed) {
                             this.isDisplayed = true;
                             showAlert(rule);
                             this.isDisplayed = false;
