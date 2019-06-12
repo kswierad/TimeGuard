@@ -41,6 +41,12 @@ public class Rule implements Serializable {
             prevTimeStamp = getTimestamp();
             prevState = state;
         }
+
+        long secondsBetweenSave = 2;
+        if (state.equals(prevState) && getTimestamp() - prevTimeStamp > secondsBetweenSave * 1000) {
+            createNewTime(prevState);
+            prevTimeStamp = getTimestamp();
+        }
     }
 
     private long getTimestamp() {
