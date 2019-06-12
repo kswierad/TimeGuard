@@ -13,7 +13,7 @@
 <?import pl.agh.cs.io.model.WindowState?>
 
 <VBox prefHeight="187.0" prefWidth="413.0" xmlns="http://javafx.com/javafx/11.0.1"
-      xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.agh.cs.io.controller.EditController">
+      xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.agh.cs.io.controller.EditProgramController">
     <children>
         <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="230.0" prefWidth="414.0" VBox.vgrow="ALWAYS">
             <children>
