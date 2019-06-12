@@ -53,9 +53,9 @@ public class StatsController {
         }
         this.fileRules = fileRules;
         fileData.setEditable(true);
-        for (String key : fileRules.getFileRules().keySet()) {
+        for (String key : fileRules.getFileRulesObservableMap().keySet()) {
             FileData dataForKey = new FileData(NameConverter.nameFromPath(key),
-                    fileRules.getFileRules().get(key).getTimes().stream()
+                    fileRules.getFileRulesObservableMap().get(key).getTimes().stream()
                             .map(FileActivityTime::getAmount)
                             .reduce(0.0, Double::sum));
             fileData.getItems().add(dataForKey);

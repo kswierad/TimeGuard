@@ -35,6 +35,9 @@
                 </ChoiceBox>
                 <Button fx:id="cancel" layoutX="137.0" layoutY="128.0" mnemonicParsing="false" onAction="#cancelAction"
                         text="Cancel"/>
+                <Button fx:id="reset" layoutX="137.0" layoutY="170.0" mnemonicParsing="false"
+                        onAction="#resetTimeInRestriction"
+                        text="Reset times"/>
                 <Text fx:id="errorInfo" layoutX="235.0" layoutY="125.0" strokeType="OUTSIDE" strokeWidth="0.0"/>
             </children>
         </AnchorPane>

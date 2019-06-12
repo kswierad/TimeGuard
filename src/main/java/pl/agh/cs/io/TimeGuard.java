@@ -24,6 +24,7 @@ public class TimeGuard extends Application {
     public static Stage primaryStage;
     private SystemTray tray;
     private TrayIcon icon;
+    private TimeGuardController timeGuardController;
 
     @Override
     public void init() throws Exception {
@@ -70,7 +71,7 @@ public class TimeGuard extends Application {
             });
             primaryStage.getIcons().add(new javafx.scene.image.Image(TimeGuard.class.getResourceAsStream("/icon.png")));
 
-            TimeGuardController timeGuardController = loader.getController();
+            timeGuardController = loader.getController();
             TimeCounterController timeCounterController = timeGuardController.getTimeCounterController();
             timeCounterController.setAlwaysOnTop();
             timeCounterController.setWindowPosition((int) primaryStage.getX(), (int) primaryStage.getY());
@@ -105,6 +106,7 @@ public class TimeGuard extends Application {
         ButtonType result = optionalResult.orElse(ButtonType.CANCEL);
         if (result == ButtonType.CLOSE) {
             tray.remove(icon);
+            timeGuardController.serialize();
             Platform.exit();
             System.exit(0);
             return true;

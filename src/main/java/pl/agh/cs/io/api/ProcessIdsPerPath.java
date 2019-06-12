@@ -1,11 +1,12 @@
 package pl.agh.cs.io.api;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class ProcessIdsPerPath {
+public class ProcessIdsPerPath implements Serializable {
     private String path;
     private Set<Integer> processIds;
 
@@ -29,7 +30,7 @@ public class ProcessIdsPerPath {
         return processIds;
     }
 
-    protected void terminateProcesses() {
+    public void terminateProcesses() {
         processIds.forEach(WindowsApi::terminateProcess);
     }
 

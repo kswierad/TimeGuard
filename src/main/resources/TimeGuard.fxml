@@ -16,6 +16,7 @@
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.CheckMenuItem?>
 
 <VBox prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="pl.agh.cs.io.controller.TimeGuardController">
@@ -26,6 +27,7 @@
                     <items>
                         <MenuItem mnemonicParsing="false" text="Add an Application" onAction="#addExe"/>
                         <MenuItem mnemonicParsing="false" text="Add files" onAction="#addFiles"/>
+                        <CheckMenuItem mnemonicParsing="false" text="Add to autostart" onAction="#addToAutostart"/>
                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Statistics">
