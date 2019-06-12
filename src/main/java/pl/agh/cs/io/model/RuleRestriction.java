@@ -2,6 +2,7 @@ package pl.agh.cs.io.model;
 
 import javafx.scene.control.Alert;
 import pl.agh.cs.io.ExceededUsageAction;
+import pl.agh.cs.io.controller.NameConverter;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -34,8 +35,10 @@ public class RuleRestriction {
                 ;
                 long currentTime = Timestamp.valueOf(LocalDateTime.now()).getTime();
                 //notify or call method every numOfSecBetweenNotifications seconds after time is exceeded
-                if ( !isDisplayed &&
-                        currentTime > rule.getRestriction().get().lastNotification + (1000 * rule.getRestriction().get().numOfSecBetweenNotifications)) {
+                if (!isDisplayed &&
+                        currentTime >
+                        rule.getRestriction().get().lastNotification +
+                        (1000 * rule.getRestriction().get().numOfSecBetweenNotifications)) {
 
                     rule.getRestriction().get().lastNotification = currentTime;
                     this.isDisplayed = true;
@@ -46,10 +49,10 @@ public class RuleRestriction {
         }
     }
 
-    public static void showAlert(Rule rule){
+    public static void showAlert(Rule rule) {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle("WARNING");
-        alert.setContentText("Time on rule " + rule.toString() + " exceeded");
+        alert.setContentText("Time on " + NameConverter.nameFromPath(rule.getExePath()) + " exceeded");
         alert.showAndWait();
     }
 
