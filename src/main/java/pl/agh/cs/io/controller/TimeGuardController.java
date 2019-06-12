@@ -1,6 +1,8 @@
 package pl.agh.cs.io.controller;
 
+import javafx.collections.FXCollections;
 import javafx.collections.MapChangeListener;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -14,6 +16,8 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import pl.agh.cs.io.Autostart;
 import pl.agh.cs.io.TimeGuard;
+import pl.agh.cs.io.RuleListViewCell;
+import pl.agh.cs.io.ImgWithPath;
 import pl.agh.cs.io.api.files.FilesListenerRunner;
 import pl.agh.cs.io.api.windows.WindowsListenerRunner;
 import pl.agh.cs.io.counter.TimeCounterController;
@@ -39,13 +43,15 @@ public class TimeGuardController {
     TimeCounterController timeCounterController = new TimeCounterController();
 
     @FXML
+    ListView<ImgWithPath> listViewOfRules;
+    private ObservableList<ImgWithPath> rulesWithIconObservableList;
+
+    @FXML
     Tab filesTab;
     @FXML
     Tab programsTab;
     @FXML
     ListView<String> listOfFileRules;
-    @FXML
-    ListView<String> listOfRules;
 
     @FXML
     public void initialize() {
@@ -59,16 +65,26 @@ public class TimeGuardController {
             rules.accept(snapshot);
             timeCounterController.accept(snapshot.getForegroundWindowProcessIdsPerPath(), rules.getRulesCopy());
         });
+
+        rulesWithIconObservableList = FXCollections.observableArrayList();
+        listViewOfRules.setItems(rulesWithIconObservableList);
+        listViewOfRules.setCellFactory(rulesListView -> new RuleListViewCell());
         filesListenerRunner.run(fileRules::accept);
         rules.rulesProperty().addListener(
                 (MapChangeListener.Change<? extends String, ? extends Rule> change) -> {
                     if (change.wasRemoved()) {
-                        listOfRules.getItems().remove(NameConverter.nameFromPath(change.getKey()));
-                        NameConverter.nameToPath.remove(NameConverter.nameFromPath(change.getKey()));
+                        rulesWithIconObservableList.remove(NameConverter.nameToImgWithPath.get(
+                                NameConverter.nameFromPath(change.getKey())
+                        ));
+                        NameConverter.nameToImgWithPath.remove(NameConverter.nameFromPath(change.getKey()));
+
                     }
                     if (change.wasAdded()) {
-                        listOfRules.getItems().add(NameConverter.nameFromPath(change.getKey()));
-                        NameConverter.nameToPath.put(NameConverter.nameFromPath(change.getKey()), change.getKey());
+                        ImgWithPath newRule = new ImgWithPath(change.getKey());
+                        rulesWithIconObservableList.add(newRule);
+                        NameConverter.nameToImgWithPath.put(NameConverter.nameFromPath(change.getKey()), newRule);
+
+
                     }
                 }
 
@@ -112,7 +128,7 @@ public class TimeGuardController {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Choose a .exe file to monitor:");
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("executable", "*.exe"));
-        File file = fileChooser.showOpenDialog(listOfRules.getScene().getWindow());
+        File file = fileChooser.showOpenDialog(listViewOfRules.getScene().getWindow());
         if (file != null) {
             if (NameConverter.nameToPath.containsValue(file.getAbsolutePath())) {
                 Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -131,7 +147,7 @@ public class TimeGuardController {
     private void addFiles(ActionEvent event) throws Exception {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Choose any file to monitor:");
-        List<File> files = fileChooser.showOpenMultipleDialog(listOfRules.getScene().getWindow());
+        List<File> files = fileChooser.showOpenMultipleDialog(listViewOfRules.getScene().getWindow());
         if (files != null) {
             for (File file : files) {
                 if (NameConverter.nameToPath.containsValue(file.getAbsolutePath())) {
@@ -151,7 +167,7 @@ public class TimeGuardController {
     @FXML
     private void removeRule(ActionEvent event) {
         if (programsTab.isSelected()) {
-            rules.removeRule(NameConverter.nameToPath.get(listOfRules.getSelectionModel().getSelectedItem()));
+            rules.removeRule(listViewOfRules.getSelectionModel().getSelectedItem().getPath());
         }
 
         if (filesTab.isSelected()) {
@@ -171,7 +187,7 @@ public class TimeGuardController {
     @FXML
     private void editRule(ActionEvent event) throws Exception {
         if (programsTab.isSelected()) {
-            String path = NameConverter.nameToPath.get(listOfRules.getSelectionModel().getSelectedItem());
+            String path = listViewOfRules.getSelectionModel().getSelectedItem().getPath();
             Rule toEdit = rules.rulesProperty().get(path);
             if (toEdit != null) {
                 Stage editWindow = new Stage();

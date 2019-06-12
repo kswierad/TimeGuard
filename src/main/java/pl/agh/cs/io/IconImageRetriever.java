@@ -29,13 +29,18 @@ public class IconImageRetriever {
     }
 
     public Image getIconImage() {
-        ICONINFO iconInfo = getIconInfo();
-        height = iconInfo.xHotspot * 2;
-        width = iconInfo.yHotspot * 2;
-        BITMAPINFO bitmapInfo = setupBitmapInfo(iconInfo);
-        int[] colourBits = getColourBits(bitmapInfo, iconInfo);
-        User32.INSTANCE.DestroyIcon(iconHandle);
-        return convertToImage(colourBits);
+        try {
+            ICONINFO iconInfo = getIconInfo();
+            height = iconInfo.xHotspot * 2;
+            width = iconInfo.yHotspot * 2;
+            BITMAPINFO bitmapInfo = setupBitmapInfo(iconInfo);
+            int[] colourBits = getColourBits(bitmapInfo, iconInfo);
+            User32.INSTANCE.DestroyIcon(iconHandle);
+            return convertToImage(colourBits);
+        } catch (IllegalStateException e) {
+            Image image = new Image("/default_icon.png");
+            return image;
+        }
     }
 
     private ICONINFO getIconInfo() {
@@ -73,4 +78,6 @@ public class IconImageRetriever {
         bufferedImage.setRGB(0, 0, width, height, colourBits, 0,  height);
         return SwingFXUtils.toFXImage(bufferedImage, null);
     }
+
+
 }
