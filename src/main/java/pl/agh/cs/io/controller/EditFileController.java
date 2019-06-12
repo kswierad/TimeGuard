@@ -72,9 +72,9 @@ public class EditFileController {
 
     public void setRule(FileRule rule) {
         this.rule = rule;
-        if (this.rule.getRestriction().isPresent()) {
+        if (this.rule.getRestriction() != null) {
             enable.setSelected(true);
-            FileRestriction restriction = rule.getRestriction().get();
+            FileRestriction restriction = rule.getRestriction();
 
             action.setValue(restriction.getAction());
             permittedTime.insertText(0, EditProgramController.longToString(restriction.getPermittedNumSec()));

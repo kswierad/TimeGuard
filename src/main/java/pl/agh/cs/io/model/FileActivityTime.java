@@ -1,8 +1,9 @@
 package pl.agh.cs.io.model;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class FileActivityTime {
+public class FileActivityTime implements Serializable {
     private final double amount;
     private final long timestamp;
 

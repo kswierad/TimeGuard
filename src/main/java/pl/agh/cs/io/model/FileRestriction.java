@@ -2,10 +2,11 @@ package pl.agh.cs.io.model;
 
 import pl.agh.cs.io.ExceededUsageAction;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
-public class FileRestriction {
+public class FileRestriction implements Serializable {
 
     private final long permittedNumSec;
 
