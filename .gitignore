@@ -4,3 +4,5 @@ build/
 .gradle/
 gradle/
 out/
+files.ser
+apps.ser
