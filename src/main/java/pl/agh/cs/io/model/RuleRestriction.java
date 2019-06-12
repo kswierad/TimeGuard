@@ -78,7 +78,7 @@ public class RuleRestriction {
     private void handleClose(ProcessIdsPerPath processes) {
         ButtonType buttonExtend = new ButtonType("Please, more time...");
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION,
-                "Your time for this application has exceeded",
+                String.format("Your time for application %s has exceeded", rule.getExePath()),
                 buttonExtend,
                 ButtonType.OK
         );
