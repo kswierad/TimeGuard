@@ -6,6 +6,7 @@ import javafx.scene.control.TextInputDialog;
 import javafx.stage.Stage;
 import pl.agh.cs.io.ExceededUsageAction;
 import pl.agh.cs.io.Utils;
+import pl.agh.cs.io.api.ProcessIdsPerPath;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -31,7 +32,7 @@ public class RuleRestriction {
         this.action = action;
     }
 
-    public void checkRestriction() {
+    public void checkRestriction(ProcessIdsPerPath processes) {
         if (rule != null && permittedNumSec > 0) {
             double usedToday = ActivityTime.getActivityTimeFromList(rule.getTimes(), state);
 
@@ -42,7 +43,7 @@ public class RuleRestriction {
                     lastNotification = currentTime;
                     //TODO Notify user
                     if (action == ExceededUsageAction.CLOSE) {
-                        handleClose();
+                        handleClose(processes);
                     }
                     System.out.println("Time used up for " + rule.getExePath() + ", " + action);
                 }
@@ -74,7 +75,7 @@ public class RuleRestriction {
         this.rule = rule;
     }
 
-    private void handleClose() {
+    private void handleClose(ProcessIdsPerPath processes) {
         ButtonType buttonExtend = new ButtonType("Please, more time...");
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION,
                 "Your time for this application has exceeded",
@@ -87,7 +88,7 @@ public class RuleRestriction {
         alert.showAndWait();
 
         if (alert.getResult() == ButtonType.OK) {
-            // fixme kill app
+            processes.terminateProcesses();
         } else {
             TextInputDialog dialog = new TextInputDialog("01:00");
             dialog.getDialogPane().getButtonTypes().setAll(ButtonType.OK);

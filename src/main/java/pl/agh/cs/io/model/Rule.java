@@ -1,5 +1,7 @@
 package pl.agh.cs.io.model;
 
+import pl.agh.cs.io.api.ProcessIdsPerPath;
+
 import java.sql.Timestamp;
 import java.text.DecimalFormat;
 import java.time.LocalDateTime;
@@ -23,7 +25,7 @@ public class Rule {
         this.restriction = Optional.empty();
     }
 
-    public void handle(WindowState state) {
+    public void handle(WindowState state, ProcessIdsPerPath processes) {
 
         if (state == WindowState.CLOSED) {
             restriction.ifPresent(RuleRestriction::clearExtraTime);
@@ -34,7 +36,7 @@ public class Rule {
                 createNewTime(prevState);
             }
 
-            restriction.ifPresent(RuleRestriction::checkRestriction);
+            restriction.ifPresent(ruleRestriction -> ruleRestriction.checkRestriction(processes));
         }
 
         if (state != prevState) {
@@ -81,7 +83,6 @@ public class Rule {
 
     public void setRestriction(RuleRestriction restriction) {
         restriction.setRule(this);
-        restriction.checkRestriction();
         this.restriction = Optional.of(restriction);
     }
 

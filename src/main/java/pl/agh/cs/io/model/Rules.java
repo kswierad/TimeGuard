@@ -27,12 +27,6 @@ public class Rules implements Consumer<OpenWindowsProcessesPerExeSnapshot> {
         if (rules.containsKey(rule.getExePath())) {
             return false;
         }
-//  fixme remove
-//        if (rule.getExePath().contains("dupa")) {
-//            rule.handle(WindowState.FOREGROUND);
-//            Thread.sleep(2000);
-//            rule.handle(WindowState.FOREGROUND);
-//        }
         this.rules.put(rule.getExePath(), rule);
         return true;
     }
@@ -57,7 +51,7 @@ public class Rules implements Consumer<OpenWindowsProcessesPerExeSnapshot> {
 
         // handle foreground window
         if (unchecked.containsKey(foreground.getPath())) {
-            rules.get(foreground.getPath()).handle(WindowState.FOREGROUND);
+            rules.get(foreground.getPath()).handle(WindowState.FOREGROUND, foreground);
             unchecked.remove(foreground.getPath());
             allWindows.remove(foreground.getPath());
         }
@@ -65,14 +59,14 @@ public class Rules implements Consumer<OpenWindowsProcessesPerExeSnapshot> {
         // handle rest of windows
         for (String exePath : allWindows.keySet()) {
             if (unchecked.containsKey(exePath)) {
-                rules.get(exePath).handle(WindowState.BACKGROUND);
+                rules.get(exePath).handle(WindowState.BACKGROUND, allWindows.get(exePath));
                 unchecked.remove(exePath);
             }
         }
 
         // handle rules that are closed
         for (Rule rule : unchecked.values()) {
-            rules.get(rule.getExePath()).handle(WindowState.CLOSED);
+            rules.get(rule.getExePath()).handle(WindowState.CLOSED, null);
         }
     }
 

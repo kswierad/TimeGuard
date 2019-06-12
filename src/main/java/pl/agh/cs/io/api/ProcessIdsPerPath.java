@@ -29,7 +29,7 @@ public class ProcessIdsPerPath {
         return processIds;
     }
 
-    protected void terminateProcesses() {
+    public void terminateProcesses() {
         processIds.forEach(WindowsApi::terminateProcess);
     }
 
