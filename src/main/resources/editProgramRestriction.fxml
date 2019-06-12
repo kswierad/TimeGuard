@@ -38,6 +38,10 @@
                 <Button fx:id="cancel" layoutX="137.0" layoutY="175.0" mnemonicParsing="false"
                         onAction="#cancelAction"
                         text="Cancel"/>
+                <Button fx:id="reset" layoutX="137.0" layoutY="210.0" mnemonicParsing="false"
+                        onAction="#resetTimeInRestriction"
+                        text="Reset times"/>
+
                 <Text layoutX="52.0" layoutY="135.0" strokeType="OUTSIDE" strokeWidth="0.0"
                       text="Type of restricted activity"/>
                 <ChoiceBox fx:id="state" layoutX="234.0" layoutY="118.0" prefWidth="150.0">

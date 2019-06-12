@@ -67,6 +67,13 @@ public class EditProgramController {
         close();
     }
 
+    @FXML
+    public void resetTimeInRestriction(ActionEvent event) {
+        rule.resetTimes();
+        close();
+    }
+
+
     public void setRule(Rule rule) {
         this.rule = rule;
         if (this.rule.getRestriction().isPresent()) {
