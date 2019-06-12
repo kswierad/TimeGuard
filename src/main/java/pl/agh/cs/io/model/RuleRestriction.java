@@ -76,30 +76,30 @@ public class RuleRestriction {
     }
 
     private void handleClose(ProcessIdsPerPath processes) {
-        ButtonType buttonExtend = new ButtonType("Please, more time...");
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION,
-                String.format("Your time for application %s has exceeded", rule.getExePath()),
-                buttonExtend,
-                ButtonType.OK
-        );
-        alert.setHeaderText(null);
-        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
-        stage.setAlwaysOnTop(true);
-        alert.showAndWait();
+//        ButtonType buttonExtend = new ButtonType("Please, more time...");
+//        Alert alert = new Alert(Alert.AlertType.CONFIRMATION,
+//                String.format("Your time for application %s has exceeded", rule.getExePath()),
+//                buttonExtend,
+//                ButtonType.OK
+//        );
+//        alert.setHeaderText(null);
+//        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+//        stage.setAlwaysOnTop(true);
+//        alert.showAndWait();
 
-        if (alert.getResult() == ButtonType.OK) {
+//        if (alert.getResult() == ButtonType.OK) {
             processes.terminateProcesses();
-        } else {
-            TextInputDialog dialog = new TextInputDialog("01:00");
-            dialog.getDialogPane().getButtonTypes().setAll(ButtonType.OK);
-            dialog.setTitle("Rule time extension");
-            dialog.setHeaderText(null);
-            dialog.setContentText("Extra time (hh:mm)");
-            stage = (Stage) dialog.getDialogPane().getScene().getWindow();
-            stage.setAlwaysOnTop(true);
-            Optional<String> result = dialog.showAndWait();
-            result.ifPresent(time -> extraTime += Utils.timeToLong(time));
-        }
+//        } else {
+//            TextInputDialog dialog = new TextInputDialog("01:00");
+//            dialog.getDialogPane().getButtonTypes().setAll(ButtonType.OK);
+//            dialog.setTitle("Rule time extension");
+//            dialog.setHeaderText(null);
+//            dialog.setContentText("Extra time (hh:mm)");
+//            stage = (Stage) dialog.getDialogPane().getScene().getWindow();
+//            stage.setAlwaysOnTop(true);
+//            Optional<String> result = dialog.showAndWait();
+//            result.ifPresent(time -> extraTime += Utils.timeToLong(time));
+//        }
     }
 
 }
