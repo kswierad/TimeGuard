@@ -154,25 +154,26 @@ public class StatsController {
         }
     }
 
-    private static String secondsToString(Double seconds) {
+    public static String secondsToString(Double seconds) {
         long longSeconds = seconds.longValue();
         StringBuilder builder = new StringBuilder();
         long uptime = TimeUnit.SECONDS.toDays(longSeconds);
         if (uptime > 0) {
-            builder.append(TimeUnit.SECONDS.toDays(longSeconds)).append(":");
+            builder.append(TimeUnit.SECONDS.toDays(longSeconds)).append("d ");
             longSeconds = longSeconds - TimeUnit.DAYS.toSeconds(uptime);
         }
         uptime = TimeUnit.SECONDS.toHours(longSeconds);
         if (uptime > 0) {
-            builder.append(TimeUnit.SECONDS.toHours(longSeconds)).append(":");
+            builder.append(TimeUnit.SECONDS.toHours(longSeconds)).append("h ");
             longSeconds = longSeconds - TimeUnit.HOURS.toSeconds(uptime);
         }
         uptime = TimeUnit.SECONDS.toMinutes(longSeconds);
         if (uptime > 0) {
-            builder.append(TimeUnit.SECONDS.toMinutes(longSeconds)).append(":");
+            builder.append(TimeUnit.SECONDS.toMinutes(longSeconds)).append("m ");
             longSeconds = longSeconds - TimeUnit.MINUTES.toSeconds(uptime);
         }
         builder.append(longSeconds);
+        builder.append("s");
         return builder.toString();
     }
 }
