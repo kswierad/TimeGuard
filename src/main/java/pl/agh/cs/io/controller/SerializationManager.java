@@ -1,59 +1,46 @@
 package pl.agh.cs.io.controller;
 
-import javafx.beans.property.MapProperty;
-import javafx.beans.property.SimpleMapProperty;
-import javafx.collections.FXCollections;
 import pl.agh.cs.io.Rule;
 
-import java.io.*;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 public class SerializationManager {
 
-    public static String filePath = "main/resources/rules.ser";
+    public static String filePath = "rules.ser";
 
-    private static MapProperty<String, Rule> emptyRules = new SimpleMapProperty<>(FXCollections.observableHashMap());
-
-    public static void serialize(MapProperty<String, Rule> o){
-
-        FileOutputStream file;
-        try {
-            file = new FileOutputStream(filePath);
-            ObjectOutputStream out = new ObjectOutputStream(file);
-
+    public static void serialize(Map<String, Rule> o) {
+        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(filePath))) {
             // Method for serialization of object
             out.writeObject(o);
-
-            out.close();
-            file.close();
-
             System.out.println("Objects have been serialized");
 
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
         }
     }
 
-    public static MapProperty<String, Rule> deserialize(){
-
+    public static Map<String, Rule> deserialize() {
         FileInputStream file;
         try {
             file = new FileInputStream(filePath);
             ObjectInputStream in = new ObjectInputStream(file);
 
             // Method for deserialization of object
-            MapProperty<String, Rule> result = (MapProperty<String, Rule>) in.readObject();
+            Map<String, Rule> result = (Map<String, Rule>) in.readObject();
 
             in.close();
             file.close();
 
             System.out.println("Objects have been deserialized ");
             return result;
-        } catch (EOFException e){
-            return emptyRules;
         } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
 
-        return emptyRules;
+        }
+        return new HashMap<>();
     }
 }

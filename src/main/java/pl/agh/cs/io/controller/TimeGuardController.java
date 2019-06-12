@@ -31,9 +31,9 @@ public class TimeGuardController {
 
     @FXML
     public void initialize() {
-        ScheduledExecutorService scheduledExecutorService = new ScheduledThreadPoolExecutor(2);
+        ScheduledExecutorService scheduledExecutorService = new ScheduledThreadPoolExecutor(3);
         WindowsListenerRunner windowsListenerRunner = new WindowsListenerRunner(scheduledExecutorService);
-        rules = new Rules();
+        rules = new Rules(scheduledExecutorService);
         windowsListenerRunner.run(snapshot -> {
             rules.accept(snapshot);
             timeCounterController.accept(snapshot.getForegroundWindowProcessIdsPerPath(), rules.getRulesCopy());
@@ -49,8 +49,13 @@ public class TimeGuardController {
                         NameConverter.nameToPath.put(NameConverter.nameFromPath(change.getKey()), change.getKey());
                     }
                 }
-
         );
+        rules.getRules().keySet().forEach(key -> {
+            listOfRules.getItems().add(NameConverter.nameFromPath(key));
+            NameConverter.nameToPath.put(NameConverter.nameFromPath(key), key);
+        });
+
+
     }
 
     @FXML

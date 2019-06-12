@@ -51,8 +51,8 @@ public class EditController {
 
     public void setRule(Rule rule) {
         this.rule = rule;
-        if (this.rule.getRestriction().isPresent()) {
-            RuleRestriction restriction = rule.getRestriction().get();
+        if (this.rule.getRestriction() != null) {
+            RuleRestriction restriction = rule.getRestriction();
 
             action.setValue(restriction.getAction());
             state.setValue(restriction.getState());

@@ -6,13 +6,12 @@ import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Rule implements Serializable {
     private String exePath;
     private List<ActivityTime> times;
-    private Optional<RuleRestriction> restriction;
+    private RuleRestriction restriction;
 
     private WindowState prevState;
     private long prevTimeStamp;
@@ -21,7 +20,6 @@ public class Rule implements Serializable {
         this.exePath = path;
         this.times = new CopyOnWriteArrayList<>();
         this.prevState = WindowState.CLOSED;
-        this.restriction = Optional.empty();
     }
 
     public void handle(WindowState state) {
@@ -31,8 +29,8 @@ public class Rule implements Serializable {
                 createNewTime(prevState);
             }
 
-            if (restriction.isPresent()) {
-                restriction.get().checkRestriction();
+            if (restriction != null) {
+                restriction.checkRestriction();
             }
         }
 
@@ -80,14 +78,14 @@ public class Rule implements Serializable {
 
     public void setRestriction(RuleRestriction restriction) {
         restriction.setRule(this);
-        this.restriction = Optional.of(restriction);
+        this.restriction = restriction;
     }
 
     public void removeRestriction() {
-        this.restriction = Optional.empty();
+        this.restriction = null;
     }
 
-    public Optional<RuleRestriction> getRestriction() {
+    public RuleRestriction getRestriction() {
         return restriction;
     }
 }
