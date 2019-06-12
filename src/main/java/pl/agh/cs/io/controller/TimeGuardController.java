@@ -177,11 +177,11 @@ public class TimeGuardController {
 
     @FXML
     private void removeRule(ActionEvent event) {
-        if (programsTab.isSelected()) {
+        if (programsTab.isSelected() && !listViewOfRules.getSelectionModel().getSelectedItems().isEmpty()) {
             rules.removeRule(listViewOfRules.getSelectionModel().getSelectedItem().getPath());
         }
 
-        if (filesTab.isSelected()) {
+        if (filesTab.isSelected() && !listOfFileRules.getSelectionModel().getSelectedItems().isEmpty()) {
             fileRules.removeFileRule(
                     NameConverter.nameToPath.get(listOfFileRules.getSelectionModel().getSelectedItem())
             );
@@ -197,7 +197,8 @@ public class TimeGuardController {
 
     @FXML
     private void editRule(ActionEvent event) throws Exception {
-        if (programsTab.isSelected()) {
+
+        if (programsTab.isSelected() && !listViewOfRules.getSelectionModel().getSelectedItems().isEmpty()) {
             String path = listViewOfRules.getSelectionModel().getSelectedItem().getPath();
             Rule toEdit = rules.rulesProperty().get(path);
             if (toEdit != null) {
@@ -217,7 +218,7 @@ public class TimeGuardController {
                 listViewOfRules.setItems(FXCollections.observableArrayList());
                 listViewOfRules.setItems(rulesWithIconObservableList);
             }
-        } else if (filesTab.isSelected()) {
+        } else if (filesTab.isSelected() && !listOfFileRules.getSelectionModel().getSelectedItems().isEmpty()) {
             String path = NameConverter.nameToPath.get(listOfFileRules.getSelectionModel().getSelectedItem());
             FileRule toEdit = fileRules.fileRulesObservableMapProperty().get(path);
             if (toEdit != null) {
