@@ -68,7 +68,7 @@ public class Rules implements Consumer<OpenWindowsProcessesPerExeSnapshot>, Seri
 
         // handle foreground window
         if (unchecked.containsKey(foreground.getPath())) {
-            rulesObservableMap.get(foreground.getPath()).handle(WindowState.FOREGROUND);
+            rulesObservableMap.get(foreground.getPath()).handle(WindowState.FOREGROUND, foreground);
             unchecked.remove(foreground.getPath());
             allWindows.remove(foreground.getPath());
         }
@@ -76,14 +76,14 @@ public class Rules implements Consumer<OpenWindowsProcessesPerExeSnapshot>, Seri
         // handle rest of windows
         for (String exePath : allWindows.keySet()) {
             if (unchecked.containsKey(exePath)) {
-                rulesObservableMap.get(exePath).handle(WindowState.BACKGROUND);
+                rulesObservableMap.get(exePath).handle(WindowState.BACKGROUND, allWindows.get(exePath));
                 unchecked.remove(exePath);
             }
         }
 
         // handle rules that are closed
         for (Rule rule : unchecked.values()) {
-            rulesObservableMap.get(rule.getExePath()).handle(WindowState.CLOSED);
+            rulesObservableMap.get(rule.getExePath()).handle(WindowState.CLOSED, null);
         }
     }
 

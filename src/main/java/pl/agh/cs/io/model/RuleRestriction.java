@@ -2,6 +2,7 @@ package pl.agh.cs.io.model;
 
 import javafx.scene.control.Alert;
 import pl.agh.cs.io.ExceededUsageAction;
+import pl.agh.cs.io.api.ProcessIdsPerPath;
 import pl.agh.cs.io.controller.NameConverter;
 
 import java.sql.Timestamp;
@@ -11,6 +12,7 @@ public class RuleRestriction {
 
     public final WindowState state;
     public final long permittedNumSec;
+    private int extraTime = 0;
 
     private ExceededUsageAction action;
     private Rule rule;
@@ -27,22 +29,25 @@ public class RuleRestriction {
         this.action = action;
     }
 
-    public void checkRestriction() {
-        if (rule != null && rule.getRestriction().permittedNumSec > 0) {
-            double usedToday = ActivityTime.getActivityTimeFromList(rule.getTimes(), rule.getRestriction().state);
+    public void checkRestriction(ProcessIdsPerPath processes) {
+        if (rule != null && permittedNumSec > 0) {
+            double usedToday = ActivityTime.getActivityTimeFromList(rule.getTimes(), state);
 
-            if (usedToday > rule.getRestriction().permittedNumSec) {
+            if (usedToday > permittedNumSec + extraTime) {
                 long currentTime = Timestamp.valueOf(LocalDateTime.now()).getTime();
                 //notify or call method every numOfSecBetweenNotifications seconds after time is exceeded
-                if (!isDisplayed &&
-                        currentTime >
-                        rule.getRestriction().lastNotification +
-                        (1000 * rule.getRestriction().numOfSecBetweenNotifications)) {
-
-                    rule.getRestriction().lastNotification = currentTime;
-                    this.isDisplayed = true;
-                    showAlert(rule);
-                    this.isDisplayed = false;
+                if (currentTime > lastNotification + (1000 * numOfSecBetweenNotifications)) {
+                    lastNotification = currentTime;
+                    if (action == ExceededUsageAction.CLOSE) {
+                        handleClose(processes);
+                    } else {
+                        if (!isDisplayed) {
+                            this.isDisplayed = true;
+                            showAlert(rule);
+                            this.isDisplayed = false;
+                        }
+                    }
+                    System.out.println("Time used up for " + rule.getExePath() + ", " + action);
                 }
             }
         }
@@ -60,6 +65,10 @@ public class RuleRestriction {
         return action;
     }
 
+    public void clearExtraTime() {
+        extraTime = 0;
+    }
+
     public void setAction(ExceededUsageAction action) {
         this.action = action;
     }
@@ -74,6 +83,33 @@ public class RuleRestriction {
 
     public void setRule(Rule rule) {
         this.rule = rule;
+    }
+
+    private void handleClose(ProcessIdsPerPath processes) {
+//        ButtonType buttonExtend = new ButtonType("Please, more time...");
+//        Alert alert = new Alert(Alert.AlertType.CONFIRMATION,
+//                String.format("Your time for application %s has exceeded", rule.getExePath()),
+//                buttonExtend,
+//                ButtonType.OK
+//        );
+//        alert.setHeaderText(null);
+//        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+//        stage.setAlwaysOnTop(true);
+//        alert.showAndWait();
+
+//        if (alert.getResult() == ButtonType.OK) {
+            processes.terminateProcesses();
+//        } else {
+//            TextInputDialog dialog = new TextInputDialog("01:00");
+//            dialog.getDialogPane().getButtonTypes().setAll(ButtonType.OK);
+//            dialog.setTitle("Rule time extension");
+//            dialog.setHeaderText(null);
+//            dialog.setContentText("Extra time (hh:mm)");
+//            stage = (Stage) dialog.getDialogPane().getScene().getWindow();
+//            stage.setAlwaysOnTop(true);
+//            Optional<String> result = dialog.showAndWait();
+//            result.ifPresent(time -> extraTime += Utils.timeToLong(time));
+//        }
     }
 
 }

@@ -30,7 +30,7 @@ public class ProcessIdsPerPath implements Serializable {
         return processIds;
     }
 
-    protected void terminateProcesses() {
+    public void terminateProcesses() {
         processIds.forEach(WindowsApi::terminateProcess);
     }
 

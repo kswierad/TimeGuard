@@ -1,5 +1,7 @@
 package pl.agh.cs.io.model;
 
+import pl.agh.cs.io.api.ProcessIdsPerPath;
+
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.text.DecimalFormat;
@@ -22,15 +24,16 @@ public class Rule implements Serializable {
         this.prevState = WindowState.CLOSED;
     }
 
-    public void handle(WindowState state) {
+    public void handle(WindowState state, ProcessIdsPerPath processes) {
+
 
         if (prevState == WindowState.FOREGROUND || prevState == WindowState.BACKGROUND) {
-            if (prevState != state && prevState != WindowState.CLOSED) {
+            if (prevState != state && state != WindowState.CLOSED) {
                 createNewTime(prevState);
             }
 
             if (restriction != null) {
-                restriction.checkRestriction();
+                restriction.checkRestriction(processes);
             }
         }
 

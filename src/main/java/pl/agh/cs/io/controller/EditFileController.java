@@ -11,6 +11,8 @@ import pl.agh.cs.io.ExceededUsageAction;
 import pl.agh.cs.io.model.FileRestriction;
 import pl.agh.cs.io.model.FileRule;
 
+import static pl.agh.cs.io.Utils.timeToLong;
+
 
 public class EditFileController {
 
@@ -29,7 +31,7 @@ public class EditFileController {
     public void okAction(ActionEvent event) {
         if (enable.isSelected()) {
             try {
-                Long permittedTime = EditProgramController.timeToLong(this.permittedTime.getCharacters().toString());
+                Long permittedTime = timeToLong(this.permittedTime.getCharacters().toString());
                 ExceededUsageAction action = this.action.getSelectionModel().getSelectedItem();
 
                 if (action != null) {
