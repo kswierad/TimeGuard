@@ -8,16 +8,16 @@ import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import pl.agh.cs.io.ExceededUsageAction;
-import pl.agh.cs.io.model.Rule;
-import pl.agh.cs.io.model.RuleRestriction;
-import pl.agh.cs.io.model.WindowState;
+import pl.agh.cs.io.model.FileRestriction;
+import pl.agh.cs.io.model.FileRule;
 
 import static pl.agh.cs.io.Utils.timeToLong;
 
-public class EditController {
+
+public class EditFileController {
 
 
-    private Rule rule;
+    private FileRule rule;
     @FXML
     private CheckBox enable;
     @FXML
@@ -25,22 +25,18 @@ public class EditController {
     @FXML
     private ChoiceBox<ExceededUsageAction> action;
     @FXML
-    private ChoiceBox<WindowState> state;
-    @FXML
     private Text errorInfo;
 
     @FXML
     public void okAction(ActionEvent event) {
         if (enable.isSelected()) {
             try {
-                String input = permittedTime.getCharacters().toString();
-                Long permittedTime = timeToLong(input);
+                Long permittedTime = timeToLong(this.permittedTime.getCharacters().toString());
                 ExceededUsageAction action = this.action.getSelectionModel().getSelectedItem();
-                WindowState state = this.state.getSelectionModel().getSelectedItem();
 
-                if (action != null && state != null) {
+                if (action != null) {
                     rule.removeRestriction();
-                    RuleRestriction restriction = new RuleRestriction(state, permittedTime, action);
+                    FileRestriction restriction = new FileRestriction(permittedTime, action, rule);
                     rule.setRestriction(restriction);
                     close();
                 } else {
@@ -53,6 +49,12 @@ public class EditController {
             removeRestriction();
             close();
         }
+    }
+
+    @FXML
+    public void resetTimeInRestriction(ActionEvent event) {
+        rule.resetTimes();
+        close();
     }
 
     @FXML
@@ -70,15 +72,14 @@ public class EditController {
         close();
     }
 
-    public void setRule(Rule rule) {
+    public void setRule(FileRule rule) {
         this.rule = rule;
         if (this.rule.getRestriction().isPresent()) {
             enable.setSelected(true);
-            RuleRestriction restriction = rule.getRestriction().get();
+            FileRestriction restriction = rule.getRestriction().get();
 
             action.setValue(restriction.getAction());
-            state.setValue(restriction.getState());
-            permittedTime.insertText(0, longToString(restriction.getPermittedNumSec()));
+            permittedTime.insertText(0, EditProgramController.longToString(restriction.getPermittedNumSec()));
         } else {
             enable.setSelected(false);
             permittedTime.insertText(0, "00:00");
@@ -95,27 +96,10 @@ public class EditController {
         if (enable.isSelected()) {
             permittedTime.setDisable(false);
             action.setDisable(false);
-            state.setDisable(false);
         } else {
             permittedTime.setDisable(true);
             action.setDisable(true);
-            state.setDisable(true);
         }
     }
-
-    private String longToString(Long secondsOrigin) {
-        Long seconds = secondsOrigin % 60;
-        secondsOrigin = secondsOrigin / 60;
-        Long minutes = secondsOrigin % 60;
-        secondsOrigin = secondsOrigin / 60;
-        Long hours = secondsOrigin % 60;
-
-        if (seconds > 0) {
-            return hours + ":" + minutes + ":" + seconds;
-        } else {
-            return hours + ":" + minutes;
-        }
-    }
-
 
 }

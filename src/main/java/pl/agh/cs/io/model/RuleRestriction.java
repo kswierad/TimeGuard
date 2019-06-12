@@ -7,10 +7,10 @@ import javafx.stage.Stage;
 import pl.agh.cs.io.ExceededUsageAction;
 import pl.agh.cs.io.Utils;
 import pl.agh.cs.io.api.ProcessIdsPerPath;
+import pl.agh.cs.io.controller.NameConverter;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 public class RuleRestriction {
 
@@ -23,6 +23,7 @@ public class RuleRestriction {
 
     private long lastNotification;
     private long numOfSecBetweenNotifications = 5;
+    private boolean isDisplayed = false;
 
 
     public RuleRestriction(WindowState state, long permittedNumSec, ExceededUsageAction action) {
@@ -45,11 +46,26 @@ public class RuleRestriction {
                     if (action == ExceededUsageAction.CLOSE) {
                         handleClose(processes);
                     }
+                    else {
+                        if(!isDisplayed) {
+                            this.isDisplayed = true;
+                            showAlert(rule);
+                            this.isDisplayed = false;
+                        }
+                    }
                     System.out.println("Time used up for " + rule.getExePath() + ", " + action);
                 }
             }
         }
     }
+
+    public static void showAlert(Rule rule) {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("WARNING");
+        alert.setContentText("Time on " + NameConverter.nameFromPath(rule.getExePath()) + " exceeded");
+        alert.showAndWait();
+    }
+
 
     public ExceededUsageAction getAction() {
         return action;

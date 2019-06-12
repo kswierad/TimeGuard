@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.collections.FXCollections?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+<?import pl.agh.cs.io.ExceededUsageAction?>
+<?import javafx.scene.control.CheckBox?>
+
+<VBox prefHeight="166.0" prefWidth="413.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="pl.agh.cs.io.controller.EditFileController">
+    <children>
+        <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="230.0" prefWidth="414.0" VBox.vgrow="ALWAYS">
+            <children>
+                <Text layoutX="90.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0"
+                      text="Enable Restriction"/>
+                <CheckBox fx:id="enable" layoutX="301.0" layoutY="14.0" mnemonicParsing="false"
+                          onAction="#enableAction"/>
+                <Button layoutX="231.0" layoutY="128.0" mnemonicParsing="false" onAction="#okAction" text="Ok"/>
+                <TextField fx:id="permittedTime" layoutX="235.0" layoutY="43.0"/>
+                <Text layoutX="68.0" layoutY="52.0" strokeType="OUTSIDE" strokeWidth="0.0"
+                      text="Time allowed (hh:mm:ss or hh:mm)" textAlignment="RIGHT" wrappingWidth="140"/>
+                <Text layoutX="52.0" layoutY="97.0" strokeType="OUTSIDE" strokeWidth="0.0"
+                      text="Action after time exceeding"/>
+                <ChoiceBox fx:id="action" layoutX="234.0" layoutY="80.0" prefWidth="150.0">
+                    <items>
+                        <FXCollections fx:factory="observableArrayList">
+                            <ExceededUsageAction fx:value="NOTIFY"/>
+                            <ExceededUsageAction fx:value="CLOSE"/>
+                        </FXCollections>
+                    </items>
+                </ChoiceBox>
+                <Button fx:id="cancel" layoutX="137.0" layoutY="128.0" mnemonicParsing="false" onAction="#cancelAction"
+                        text="Cancel"/>
+                <Button fx:id="reset" layoutX="137.0" layoutY="170.0" mnemonicParsing="false"
+                        onAction="#resetTimeInRestriction"
+                        text="Reset times"/>
+                <Text fx:id="errorInfo" layoutX="235.0" layoutY="125.0" strokeType="OUTSIDE" strokeWidth="0.0"/>
+            </children>
+        </AnchorPane>
+    </children>
+</VBox>
