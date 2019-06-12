@@ -15,7 +15,7 @@ public class Autostart {
     }
 
     public static void writeAutostartFile() throws IOException, URISyntaxException {
-        String str = "javaw -Xmx200m -jar " + Autostart.getPath();
+        String str = "javaw -Xmx1024m -jar " + Autostart.getPath();
         BufferedWriter writer = new BufferedWriter(new FileWriter(windowsStartupDirectory + "TimeGuard.bat"));
         writer.write(str);
         writer.close();
