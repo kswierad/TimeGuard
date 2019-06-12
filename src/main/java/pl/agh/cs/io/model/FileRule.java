@@ -6,12 +6,14 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class FileRule {
 
     private String path;
     private List<FileActivityTime> times;
+    private Optional<FileRestriction> restriction;
 
     private Boolean active;
     private long prevTimeStamp;
@@ -21,10 +23,14 @@ public class FileRule {
     public FileRule(String path) {
         this.path = path;
         this.times = new CopyOnWriteArrayList<>();
+        this.restriction = Optional.empty();
         active = false;
     }
 
     public void activate(ProcessIdsPerFilepath fileProcesses) {
+        if (restriction.isPresent()) {
+            restriction.get().checkRestriction();
+        }
         this.fileProcesses = fileProcesses;
         if (!active) {
             active = true;
@@ -64,5 +70,18 @@ public class FileRule {
 
     public void resetTimes() {
         times.clear();
+    }
+
+    public void setRestriction(FileRestriction restriction) {
+        restriction.setRule(this);
+        this.restriction = Optional.of(restriction);
+    }
+
+    public void removeRestriction() {
+        this.restriction = Optional.empty();
+    }
+
+    public Optional<FileRestriction> getRestriction() {
+        return restriction;
     }
 }
