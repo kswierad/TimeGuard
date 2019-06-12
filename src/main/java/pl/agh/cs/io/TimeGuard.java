@@ -21,7 +21,7 @@ import java.io.IOException;
 import java.util.Optional;
 
 public class TimeGuard extends Application {
-    private Stage primaryStage;
+    public static Stage primaryStage;
     private SystemTray tray;
     private TrayIcon icon;
 

@@ -12,6 +12,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.Tab;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import pl.agh.cs.io.TimeGuard;
 import pl.agh.cs.io.RuleListViewCell;
@@ -198,6 +199,8 @@ public class TimeGuardController {
                 Scene scene = new Scene(rootLayout);
 
                 editWindow.setScene(scene);
+                editWindow.initModality(Modality.WINDOW_MODAL);
+                editWindow.initOwner(TimeGuard.primaryStage);
                 editWindow.show();
             }
         } else if (filesTab.isSelected()) {
@@ -214,6 +217,8 @@ public class TimeGuardController {
                 Scene scene = new Scene(rootLayout);
 
                 editWindow.setScene(scene);
+                editWindow.initModality(Modality.WINDOW_MODAL);
+                editWindow.initOwner(TimeGuard.primaryStage);
                 editWindow.show();
             }
         }
