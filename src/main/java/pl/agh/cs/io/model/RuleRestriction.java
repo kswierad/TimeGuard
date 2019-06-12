@@ -28,18 +28,18 @@ public class RuleRestriction {
     }
 
     public void checkRestriction() {
-        if (rule != null && rule.getRestriction().get().permittedNumSec > 0) {
-            double usedToday = ActivityTime.getActivityTimeFromList(rule.getTimes(), rule.getRestriction().get().state);
+        if (rule != null && rule.getRestriction().permittedNumSec > 0) {
+            double usedToday = ActivityTime.getActivityTimeFromList(rule.getTimes(), rule.getRestriction().state);
 
-            if (usedToday > rule.getRestriction().get().permittedNumSec) {
+            if (usedToday > rule.getRestriction().permittedNumSec) {
                 long currentTime = Timestamp.valueOf(LocalDateTime.now()).getTime();
                 //notify or call method every numOfSecBetweenNotifications seconds after time is exceeded
                 if (!isDisplayed &&
                         currentTime >
-                        rule.getRestriction().get().lastNotification +
-                        (1000 * rule.getRestriction().get().numOfSecBetweenNotifications)) {
+                        rule.getRestriction().lastNotification +
+                        (1000 * rule.getRestriction().numOfSecBetweenNotifications)) {
 
-                    rule.getRestriction().get().lastNotification = currentTime;
+                    rule.getRestriction().lastNotification = currentTime;
                     this.isDisplayed = true;
                     showAlert(rule);
                     this.isDisplayed = false;

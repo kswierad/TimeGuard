@@ -55,11 +55,11 @@ public class TimeGuardController {
 
     @FXML
     public void initialize() {
-        ScheduledExecutorService scheduledExecutorService = new ScheduledThreadPoolExecutor(3);
+        ScheduledExecutorService scheduledExecutorService = new ScheduledThreadPoolExecutor(4);
         WindowsListenerRunner windowsListenerRunner = new WindowsListenerRunner(scheduledExecutorService);
         rules = new Rules(scheduledExecutorService);
         FilesListenerRunner filesListenerRunner = new FilesListenerRunner(scheduledExecutorService);
-        fileRules = new FileRules();
+        fileRules = new FileRules(scheduledExecutorService);
         windowsListenerRunner.run(snapshot -> {
             rules.accept(snapshot);
             timeCounterController.accept(snapshot.getForegroundWindowProcessIdsPerPath(), rules.getRulesCopy());
@@ -82,35 +82,40 @@ public class TimeGuardController {
                         ImgWithPath newRule = new ImgWithPath(change.getKey());
                         rulesWithIconObservableList.add(newRule);
                         NameConverter.nameToImgWithPath.put(NameConverter.nameFromPath(change.getKey()), newRule);
-
-
                     }
                 }
 
         );
-        fileRules.fileRulesProperty().addListener(
+        rules.getRules().keySet().forEach(key -> {
+            ImgWithPath newRule = new ImgWithPath(key);
+            rulesWithIconObservableList.add(newRule);
+            NameConverter.nameToImgWithPath.put(NameConverter.nameFromPath(key), newRule);
+        });
+        fileRules.fileRulesObservableMapProperty().addListener(
                 (MapChangeListener.Change<? extends String, ? extends FileRule> change) -> {
                     if (change.wasRemoved()) {
                         listOfFileRules.getItems().remove(NameConverter.nameFromPath(change.getKey()));
                         NameConverter.nameToPath.remove(NameConverter.nameFromPath(change.getKey()));
                     }
                     if (change.wasAdded()) {
-
                         listOfFileRules.getItems().add(NameConverter.nameFromPath(change.getKey()));
                         NameConverter.nameToPath.put(NameConverter.nameFromPath(change.getKey()), change.getKey());
                     }
                 }
         );
-        rules.getRules().keySet().forEach(key -> {
+        fileRules.getFileRulesObservableMap().keySet().forEach(key -> {
             listOfFileRules.getItems().add(NameConverter.nameFromPath(key));
             NameConverter.nameToPath.put(NameConverter.nameFromPath(key), key);
         });
-
-
     }
 
     public TimeCounterController getTimeCounterController() {
         return timeCounterController;
+    }
+
+    public void serialize() {
+        rules.serialize();
+        fileRules.serialize();
     }
 
     @FXML
@@ -209,7 +214,7 @@ public class TimeGuardController {
             }
         } else if (filesTab.isSelected()) {
             String path = NameConverter.nameToPath.get(listOfFileRules.getSelectionModel().getSelectedItem());
-            FileRule toEdit = fileRules.fileRulesProperty().get(path);
+            FileRule toEdit = fileRules.fileRulesObservableMapProperty().get(path);
             if (toEdit != null) {
                 Stage editWindow = new Stage();
                 editWindow.setTitle("Rule");

@@ -18,14 +18,14 @@ import java.util.function.Consumer;
 public class Rules implements Consumer<OpenWindowsProcessesPerExeSnapshot>, Serializable {
     private Map<String, Rule> rulesPlainMap;
     private ObservableMap<String, Rule> rulesObservableMap;
-    private int timeIntervalInSecondsBetweenBackups = 120;
+    private int timeIntervalInSecondsBetweenBackups = 10;
 
     public Rules(ScheduledExecutorService executorService) {
-        rulesPlainMap = SerializationManager.deserialize();
+        rulesPlainMap = SerializationManager.deserializeApps();
         rulesObservableMap = FXCollections.synchronizedObservableMap(FXCollections.observableMap(rulesPlainMap));
 
         Runnable serializeRunnable = () -> {
-            SerializationManager.serialize(rulesPlainMap);
+            SerializationManager.serializeApps(rulesPlainMap);
         };
         executorService.scheduleAtFixedRate(serializeRunnable,
                 0,
@@ -42,20 +42,20 @@ public class Rules implements Consumer<OpenWindowsProcessesPerExeSnapshot>, Seri
             return false;
         }
         rulesObservableMap.put(rule.getExePath(), rule);
-        SerializationManager.serialize(rulesPlainMap);
+        SerializationManager.serializeApps(rulesPlainMap);
         return true;
     }
 
     public void removeRule(String path) {
         if (rulesObservableMap.containsKey(path)) {
             rulesObservableMap.remove(path);
-            SerializationManager.serialize(rulesPlainMap);
+            SerializationManager.serializeApps(rulesPlainMap);
         }
     }
 
     public void removeRule(Rule rule) {
         removeRule(rule.getExePath());
-        SerializationManager.serialize(rulesPlainMap);
+        SerializationManager.serializeApps(rulesPlainMap);
     }
 
     @Override
@@ -97,6 +97,10 @@ public class Rules implements Consumer<OpenWindowsProcessesPerExeSnapshot>, Seri
 
     public ConcurrentHashMap<String, Rule> getRules() {
         return new ConcurrentHashMap<>(rulesObservableMap);
+    }
+
+    public void serialize() {
+        SerializationManager.serializeApps(rulesPlainMap);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package pl.agh.cs.io.controller;
 
-import pl.agh.cs.io.Rule;
+import pl.agh.cs.io.model.FileRule;
+import pl.agh.cs.io.model.Rule;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -12,22 +13,31 @@ import java.util.Map;
 
 public class SerializationManager {
 
-    public static String filePath = "rules.ser";
+    public static String appFilePath = "apps.ser";
+    public static String filesFilePath = "files.ser";
 
-    public static void serialize(Map<String, Rule> o) {
-        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(filePath))) {
+    public static void serializeApps(Map<String, Rule> o) {
+        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(appFilePath))) {
             // Method for serialization of object
             out.writeObject(o);
-            System.out.println("Objects have been serialized");
 
         } catch (Exception e) {
         }
     }
 
-    public static Map<String, Rule> deserialize() {
+    public static void serializeFiles(Map<String, FileRule> o) {
+        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(filesFilePath))) {
+            // Method for serialization of object
+            out.writeObject(o);
+
+        } catch (Exception e) {
+        }
+    }
+
+    public static Map<String, Rule> deserializeApps() {
         FileInputStream file;
         try {
-            file = new FileInputStream(filePath);
+            file = new FileInputStream(appFilePath);
             ObjectInputStream in = new ObjectInputStream(file);
 
             // Method for deserialization of object
@@ -36,10 +46,27 @@ public class SerializationManager {
             in.close();
             file.close();
 
-            System.out.println("Objects have been deserialized ");
             return result;
         } catch (IOException | ClassNotFoundException e) {
 
+        }
+        return new HashMap<>();
+    }
+
+    public static Map<String, FileRule> deserializeFiles() {
+        FileInputStream file;
+        try {
+            file = new FileInputStream(filesFilePath);
+            ObjectInputStream in = new ObjectInputStream(file);
+
+            // Method for deserialization of object
+            Map<String, FileRule> result = (Map<String, FileRule>) in.readObject();
+
+            in.close();
+            file.close();
+
+            return result;
+        } catch (IOException | ClassNotFoundException e) {
         }
         return new HashMap<>();
     }
