@@ -67,7 +67,7 @@ public class TimeGuardController {
 
         rulesWithIconObservableList = FXCollections.observableArrayList();
         listViewOfRules.setItems(rulesWithIconObservableList);
-        listViewOfRules.setCellFactory(rulesListView -> new RuleListViewCell());
+        listViewOfRules.setCellFactory(rulesListView -> new RuleListViewCell(rules));
         filesListenerRunner.run(fileRules::accept);
         rules.rulesProperty().addListener(
                 (MapChangeListener.Change<? extends String, ? extends Rule> change) -> {
@@ -82,8 +82,6 @@ public class TimeGuardController {
                         ImgWithPath newRule = new ImgWithPath(change.getKey());
                         rulesWithIconObservableList.add(newRule);
                         NameConverter.nameToImgWithPath.put(NameConverter.nameFromPath(change.getKey()), newRule);
-
-
                     }
                 }
 
@@ -201,7 +199,9 @@ public class TimeGuardController {
                 editWindow.setScene(scene);
                 editWindow.initModality(Modality.WINDOW_MODAL);
                 editWindow.initOwner(TimeGuard.primaryStage);
-                editWindow.show();
+                editWindow.showAndWait();
+                listViewOfRules.setItems(FXCollections.observableArrayList());
+                listViewOfRules.setItems(rulesWithIconObservableList);
             }
         } else if (filesTab.isSelected()) {
             String path = NameConverter.nameToPath.get(listOfFileRules.getSelectionModel().getSelectedItem());

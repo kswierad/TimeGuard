@@ -7,12 +7,14 @@ import javafx.scene.control.ListCell;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import pl.agh.cs.io.controller.NameConverter;
+import pl.agh.cs.io.model.Rules;
 
 
 import java.io.IOException;
 
 public class RuleListViewCell extends ListCell<ImgWithPath> {
 
+    private final Rules rules;
     @FXML
     Label exeName;
 
@@ -20,9 +22,16 @@ public class RuleListViewCell extends ListCell<ImgWithPath> {
     ImageView imageView;
 
     @FXML
+    ImageView imageR;
+
+    @FXML
     GridPane gridPane;
 
     private FXMLLoader mLLoader;
+
+    public RuleListViewCell(Rules rules) {
+        this.rules = rules;
+    }
 
     @Override
     protected void updateItem(ImgWithPath imgWithPath, boolean empty) {
@@ -48,7 +57,11 @@ public class RuleListViewCell extends ListCell<ImgWithPath> {
 
             exeName.setText(NameConverter.nameFromPath(imgWithPath.getPath()));
             imageView.setImage(imgWithPath.getImg());
-
+            if (rules.getRules().get(imgWithPath.getPath()).getRestriction().isPresent()) {
+                imageR.setVisible(true);
+            } else {
+                imageR.setVisible(false);
+            }
             setText(null);
             setGraphic(gridPane);
         }
