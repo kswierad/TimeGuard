@@ -81,7 +81,6 @@ public class Rule {
 
     public void setRestriction(RuleRestriction restriction) {
         restriction.setRule(this);
-        restriction.checkRestriction();
         this.restriction = Optional.of(restriction);
     }
 

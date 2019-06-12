@@ -87,7 +87,7 @@ public class RuleRestriction {
         alert.showAndWait();
 
         if (alert.getResult() == ButtonType.OK) {
-            // fixme kill app
+
         } else {
             TextInputDialog dialog = new TextInputDialog("01:00");
             dialog.getDialogPane().getButtonTypes().setAll(ButtonType.OK);
