@@ -128,7 +128,7 @@ public class TimeGuardController {
 
         VBox rootLayout = loader.load();
         ((StatsController) loader.getController()).setRules(fileRules, rules);
-        Scene scene = new Scene(rootLayout, 800, 600);
+        Scene scene = new Scene(rootLayout, 700, 400);
 
         statsWindow.setScene(scene);
         statsWindow.show();

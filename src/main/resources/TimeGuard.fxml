@@ -18,7 +18,7 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.CheckMenuItem?>
 
-<VBox prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1"
+<VBox minHeight="-Infinity" maxHeight="Infinity" minWidth="-Infinity" maxWidth="Infinity" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="pl.agh.cs.io.controller.TimeGuardController">
     <children>
         <MenuBar VBox.vgrow="NEVER">
@@ -43,13 +43,13 @@
             </menus>
         </MenuBar>
         <HBox>
-            <TabPane prefHeight="495.0" prefWidth="739.0" tabClosingPolicy="UNAVAILABLE">
+            <TabPane minHeight="-Infinity" maxHeight="Infinity" minWidth="-Infinity" maxWidth="Infinity" prefHeight="495.0" prefWidth="739.0" tabClosingPolicy="UNAVAILABLE">
                 <tabs>
                     <Tab text="Programs" fx:id="programsTab">
                         <content>
-                            <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                            <AnchorPane minHeight="-Infinity" maxHeight="Infinity" minWidth="-Infinity" maxWidth="Infinity" prefHeight="200.0" prefWidth="200.0">
                                 <children>
-                                    <ListView fx:id="listViewOfRules" prefHeight="462.0" prefWidth="739.0">
+                                    <ListView fx:id="listViewOfRules" minHeight="-Infinity" maxHeight="Infinity" minWidth="-Infinity" maxWidth="Infinity" prefHeight="462.0" prefWidth="739.0">
                                     </ListView>
                                 </children>
                             </AnchorPane>
@@ -57,23 +57,23 @@
                     </Tab>
                     <Tab text="Files" fx:id="filesTab">
                         <content>
-                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                            <AnchorPane  minHeight="-Infinity" maxHeight="Infinity" minWidth="-Infinity" maxWidth="Infinity" prefHeight="180.0" prefWidth="200.0">
                                 <children>
-                                    <ListView fx:id="listOfFileRules" prefHeight="462.0" prefWidth="739.0" />
+                                    <ListView minHeight="-Infinity" maxHeight="Infinity" minWidth="-Infinity" maxWidth="Infinity" fx:id="listOfFileRules" prefHeight="462.0" prefWidth="739.0" />
                                 </children>
                             </AnchorPane>
                         </content>
                     </Tab>
                 </tabs>
             </TabPane>
-            <VBox prefWidth="60">
-                <Button onAction="#removeRule" text="delete" />
-                <Button onAction="#editRule" text=" edit " />
+            <VBox alignment="TOP_CENTER" minHeight="-Infinity" maxHeight="Infinity" minWidth="-Infinity" maxWidth="Infinity" prefWidth="60" spacing="5">
+                <Button  translateY="10" onAction="#removeRule" text="delete" />
+                <Button  translateY="10" onAction="#editRule" text=" edit " />
             </VBox>
         </HBox>
         <HBox id="HBox" alignment="CENTER_LEFT" spacing="5.0" VBox.vgrow="NEVER">
             <children>
-                <Label maxHeight="1.7976931348623157E308" maxWidth="-1.0" text="Version 0.1" HBox.hgrow="ALWAYS">
+                <Label maxHeight="1.7976931348623157E308" maxWidth="-1.0" text="Version 1.0.1" HBox.hgrow="ALWAYS">
                     <font>
                         <Font size="11.0" fx:id="x3" />
                     </font>
@@ -82,7 +82,7 @@
                     </textFill>
                 </Label>
                 <Pane prefHeight="-1.0" prefWidth="-1.0" HBox.hgrow="ALWAYS" />
-                <Label font="$x3" maxWidth="-1.0" text="Has bugs" textFill="$x4" HBox.hgrow="NEVER" />
+                <Label font="$x3" maxWidth="-1.0" text="Should work properly" textFill="$x4" HBox.hgrow="NEVER" />
             </children>
             <padding>
                 <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />

@@ -58,7 +58,7 @@ public class TimeGuard extends Application {
             loader.setLocation(TimeGuard.class.getResource("/TimeGuard.fxml"));
             VBox rootLayout = loader.load();
 
-            Scene scene = new Scene(rootLayout, 800, 600);
+            Scene scene = new Scene(rootLayout, 800, 535);
 
             primaryStage.setScene(scene);
             primaryStage.setIconified(false);
