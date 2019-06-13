@@ -44,7 +44,11 @@ public class OpenFilesPathProcessIdsRetriever {
     private void execAndLoadResults() {
         try {
             Runtime runtime = Runtime.getRuntime();
-            Process process = runtime.exec("PowerShell.exe " + exeLocation + "/Handle64.exe /accepteula");
+            String command =
+                    String.format("%s\\System32\\WindowsPowershell\\v1.0\\powershell.exe %sHandle64.exe /accepteula",
+                            System.getenv("SYSTEMROOT"),
+                            exeLocation);
+            Process process = runtime.exec(command);
             InputStream is = process.getInputStream();
             scanner = new Scanner(is);
         } catch (IOException e) {
