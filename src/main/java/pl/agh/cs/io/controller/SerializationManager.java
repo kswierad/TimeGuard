@@ -1,20 +1,34 @@
 package pl.agh.cs.io.controller;
 
+import pl.agh.cs.io.Autostart;
 import pl.agh.cs.io.model.FileRule;
 import pl.agh.cs.io.model.Rule;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 
 public class SerializationManager {
 
-    public static String appFilePath = "apps.ser";
-    public static String filesFilePath = "files.ser";
+    private static String runPath;
+
+    static {
+        try {
+            File possibleJarFile =
+                    new File(Autostart.class.getProtectionDomain().getCodeSource().getLocation().toURI());
+            runPath = possibleJarFile.getPath().endsWith(".jar") ?
+                    possibleJarFile.getParentFile().getPath() : possibleJarFile.getPath();
+        } catch (URISyntaxException e) {
+        }
+    }
+    public static String appFilePath = String.format("%s\\apps.ser", runPath);
+    public static String filesFilePath = String.format("%s\\files.ser", runPath);
 
     public static void serializeApps(Map<String, Rule> o) {
         try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(appFilePath))) {

@@ -1,7 +1,14 @@
 package pl.agh.cs.io.api;
 
+import pl.agh.cs.io.Autostart;
+import pl.agh.cs.io.TimeGuard;
+
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -10,8 +17,24 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class OpenFilesPathProcessIdsRetriever {
+
+    private static String exePath;
+    static {
+        try {
+            File possibleJarFile =
+                    new File(Autostart.class.getProtectionDomain().getCodeSource().getLocation().toURI());
+            String target = possibleJarFile.getPath().endsWith(".jar") ?
+                    possibleJarFile.getParentFile().getPath() : possibleJarFile.getPath();
+            if (!Files.exists(Paths.get(target + "\\handle64.exe"))) {
+                Files.copy(TimeGuard.class.getResourceAsStream("/handle64.exe"),
+                        Paths.get(target + "\\handle64.exe"));
+            }
+            exePath = new File(target + "\\handle64.exe").getAbsolutePath();
+        } catch (IOException | URISyntaxException e) {
+        }
+    }
     private static String systemDrivePrefix = System.getenv("SystemDrive");
-    private static String exeLocation = "exe/";
+
     private static List<String> patternsToIgnoreStrings = Arrays.asList(
             "\\\\Windows.*",
             "\\\\Program Files.*",
@@ -45,9 +68,9 @@ public class OpenFilesPathProcessIdsRetriever {
         try {
             Runtime runtime = Runtime.getRuntime();
             String command =
-                    String.format("%s\\System32\\WindowsPowershell\\v1.0\\powershell.exe %sHandle64.exe /accepteula",
+                    String.format("\"%s\\System32\\WindowsPowershell\\v1.0\\powershell.exe\" \"%s\" /accepteula",
                             System.getenv("SYSTEMROOT"),
-                            exeLocation);
+                            exePath);
             Process process = runtime.exec(command);
             InputStream is = process.getInputStream();
             scanner = new Scanner(is);
